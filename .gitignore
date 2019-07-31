@@ -1,0 +1,4 @@
+.idea
+.pio
+cmake-build-debug
+CMakeListsPrivate.txt
