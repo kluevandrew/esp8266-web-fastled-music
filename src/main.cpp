@@ -17,6 +17,3 @@ void loop() {
     Application::getInstance().loop();
 }
 #pragma clang diagnostic pop
-
-
-
