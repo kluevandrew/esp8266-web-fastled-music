@@ -42,6 +42,8 @@ public:
 
 private:
     CRGB strip[LED_LENGTH];
+
+private:
     LedAnimation *animation = new DirectColorAnimation();
 };
 

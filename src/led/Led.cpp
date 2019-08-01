@@ -20,7 +20,7 @@
 #include <config/config.h>
 
 Led::Led() {
-    FastLED.addLeds<WS2813, LED_DATA_PIN, GRB>(strip, LED_LENGTH); // @fixme use config constants
+    CFastLED::addLeds<LED_TYPE, LED_DATA_PIN, LED_COLOR_ORDER>(strip, LED_LENGTH);
     if (FASTLED_POWER_LIMIT > 0) {
         FastLED.setMaxPowerInVoltsAndMilliamps(5, FASTLED_POWER_LIMIT);
     }
@@ -29,7 +29,7 @@ Led::Led() {
 }
 
 void Led::animate() {
-    this->animation->animate();
+    this->animation->animate(strip);
 }
 
 void Led::setColorAt(int index, const CRGB &color) {
@@ -49,4 +49,3 @@ void Led::setAnimation(LedAnimation *newAnimation) {
     delete this->animation;
     this->animation = newAnimation;
 }
-

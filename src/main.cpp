@@ -26,7 +26,6 @@ ADC_MODE(ADC_VCC);
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 
 void setup() {
-    delay(1);
     Application::getInstance().setup();
 }
 

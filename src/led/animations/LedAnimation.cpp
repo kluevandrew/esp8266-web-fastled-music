@@ -17,3 +17,7 @@
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 #include "LedAnimation.h"
+
+void LedAnimation::animate(CRGB *strip) {
+    animate();
+}

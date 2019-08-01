@@ -27,6 +27,10 @@
 #include <led/animations/RainbowAnimation.h>
 #include <led/animations/DirectColorAnimation.h>
 #include <led/animations/DynamicColorAnimation.h>
+#include <led/animations/DotBeatAnimation.h>
+#include <led/animations/BlendwaveAnimation.h>
+#include <led/animations/BlurAnimation.h>
+#include <led/animations/ConfettiAnimation.h>
 
 LedAnimation *AnimationFactory::create(const String &name) {
     create(name, JsonObject());
@@ -63,6 +67,22 @@ LedAnimation *AnimationFactory::create(const String &name, const JsonObject &opt
 
     if (name == "dynamic") {
         return new DynamicColorAnimation(options);
+    }
+
+    if (name == "dot_beat") {
+        return new DotBeatAnimation(options);
+    }
+
+    if (name == "blendwave") {
+        return new BlendwaveAnimation(options);
+    }
+
+    if (name == "blur") {
+        return new BlurAnimation(options);
+    }
+
+    if (name == "confetti") {
+        return new ConfettiAnimation(options);
     }
 
     return new NoopAnimation();

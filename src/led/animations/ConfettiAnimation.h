@@ -1,7 +1,7 @@
-/*
+/* 
  * This file is part of the esp8266-web-fastled-music distribution (https://github.com/kluevandrew/esp8266-web-fastled-music).
  * Copyright (c) 2019, Kluev Andrew <kluev.andrew@gmail.com>.
- *
+ * 
  * esp8266-web-fastled-music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  *
  * You are free to:
@@ -13,27 +13,44 @@
  *   NonCommercial — You may not use the material for commercial purposes.
  *   ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
  *   No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
- *
+ * 
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_LEDANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_LEDANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_CONFETTIANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_CONFETTIANIMATION_H
 
 
-#include "ArduinoJson.h"
+#include "LedAnimation.h"
 #include <FastLED.h>
-#include <config/config.h>
 
-class LedAnimation {
+/*
+ * @see https://github.com/atuline/FastLED-Demos/blob/master/confetti/confetti.ino
+ */
+class ConfettiAnimation : public LedAnimation {
 public:
-    explicit LedAnimation() = default;
+    ConfettiAnimation() = default;
 
-    virtual ~LedAnimation() = default;
+    explicit ConfettiAnimation(const JsonObject &options);
 
-    virtual void animate() = 0;
+    ~ConfettiAnimation() override = default;
 
-    virtual void animate(CRGB strip[LED_LENGTH]);
+    void animate() override {};
+
+    void animate(CRGB *strip) override;
+
+private:
+    uint8_t duration = 15;
+    uint8_t delay = 5;
+    int hue = 50;
+    uint8_t sat = 100;
+    uint8_t fade = 8;
+    uint8_t bright = 255;
+    int diff = 256;
+
+    unsigned long timer = 0;
+    uint8_t inc = 1;
+    uint8_t lastSecond = 0;
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_LEDANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_CONFETTIANIMATION_H
