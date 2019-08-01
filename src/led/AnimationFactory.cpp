@@ -10,6 +10,9 @@
 #include <led/animations/FrequencyStrobeAnimation.h>
 #include <led/animations/RunningFrequencyAnimation.h>
 #include <led/animations/SpectrumAnalyzerFrequencyAnimation.h>
+#include <led/animations/RainbowAnimation.h>
+#include <led/animations/DirectColorAnimation.h>
+#include <led/animations/DynamicColorAnimation.h>
 
 LedAnimation* AnimationFactory::create(const String& name) {
     create(name, JsonObject());
@@ -34,6 +37,18 @@ LedAnimation *AnimationFactory::create(const String &name, const JsonObject& opt
 
     if (name == "spectrum") {
         return new SpectrumAnalyzerFrequencyAnimation(options);
+    }
+
+    if (name == "rainbow") {
+        return new RainbowAnimation(options);
+    }
+
+    if (name == "direct") {
+        return new DirectColorAnimation(options);
+    }
+
+    if (name == "dynamic") {
+        return new DynamicColorAnimation(options);
     }
 
     return new NoopAnimation();

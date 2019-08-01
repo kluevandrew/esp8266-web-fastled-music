@@ -29,13 +29,13 @@ void AudioAnalyzer::analyze() {
     }
 
     // низкие частоты, выборка со 2 по 5 тон (0 и 1 зашумленные!)
-    int lowEnd = 6;
+    int lowEnd = 32;
     for (int i = 2; i < lowEnd; i++) {
         if (vReal[i] > low) {
             low = vReal[i];
         }
     }
-    int midEnd = lowEnd * 2;
+    int midEnd = 96;
     for (int i = lowEnd; i < midEnd; i++) {
         if (vReal[i] > mid) {
             mid = vReal[i];
@@ -57,7 +57,7 @@ void AudioAnalyzer::sampling() {
     microseconds = micros();
     for (int i = 0; i < samples; i++) {
         vReal[i] = Application::getInstance().getAdc()->analogRead(0);
-        if (vReal[i] < 500) { // @fixme remove hardcoded LOW_PASS_FILTER
+        if (vReal[i] < 650) { // @fixme remove hardcoded LOW_PASS_FILTER
             vReal[i] = 0;
         }
         vImag[i] = 0;

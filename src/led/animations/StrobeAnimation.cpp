@@ -4,14 +4,6 @@
 
 #include "StrobeAnimation.h"
 
-void StrobeAnimation::animate() {
-    EVERY_N_MILLIS_I(timingObj, delay) {
-        timingObj.setPeriod(delay); // @fixme must be exactly each set on creation
-        FastLED.showColor(state ? colorOn : colorOff);
-        state = !state;
-    }
-}
-
 StrobeAnimation::StrobeAnimation(const JsonObject& options) {
     if (options.containsKey("delay")) {
         delay = options["delay"];
@@ -27,4 +19,13 @@ StrobeAnimation::StrobeAnimation(const JsonObject& options) {
         colorOff = CRGB(colorOffValues[0], colorOffValues[1], colorOffValues[2]);
     }
 }
+
+void StrobeAnimation::animate() {
+    EVERY_N_MILLIS_I(timingObj, delay) {
+        timingObj.setPeriod(delay); // @fixme must be exactly each set on creation
+        FastLED.showColor(state ? colorOn : colorOff);
+        state = !state;
+    }
+}
+
 

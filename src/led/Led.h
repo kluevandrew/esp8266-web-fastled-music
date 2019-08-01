@@ -9,7 +9,7 @@
 #include <FastLED.h>
 #include <led/animations/LedAnimation.h>
 #include <led/animations/NoopAnimation.h>
-#include <led/animations/SpectrumAnalyzerFrequencyAnimation.h>
+#include <led/animations/DirectColorAnimation.h>
 
 class Led {
 public:
@@ -26,7 +26,7 @@ public:
 
 private:
     CRGB strip[LED_LENGTH];
-    LedAnimation *animation = new SpectrumAnalyzerFrequencyAnimation();
+    LedAnimation *animation = new DirectColorAnimation();
 };
 
 

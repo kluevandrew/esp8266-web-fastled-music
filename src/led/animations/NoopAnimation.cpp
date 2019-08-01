@@ -5,5 +5,4 @@
 #include "NoopAnimation.h"
 
 void NoopAnimation::animate() {
-    FastLED.showColor(CRGB::Black);
 }

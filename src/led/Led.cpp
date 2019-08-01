@@ -31,7 +31,7 @@ LedAnimation *Led::getAnimation() const {
 }
 
 void Led::setAnimation(LedAnimation *newAnimation) {
-    FastLED.showColor(CRGB::Black);
+    FastLED.clear(true);
     delete this->animation;
     this->animation = newAnimation;
 }

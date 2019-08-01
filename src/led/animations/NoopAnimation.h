@@ -7,7 +7,6 @@
 
 
 #include "LedAnimation.h"
-#include <FastLED.h>
 
 class NoopAnimation: public LedAnimation {
 public:

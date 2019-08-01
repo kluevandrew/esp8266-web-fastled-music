@@ -22,7 +22,7 @@ private:
     uint8_t emptyColor = HUE_PURPLE;
     uint8_t speed = 11;
 
-    unsigned long timer = 0;
+    unsigned long stepTimer = 0;
 };
 
 
