@@ -1,7 +1,21 @@
-//
-// Created by Андрей Клюев on 2019-07-30.
-//
-
+/*
+ * This file is part of the esp8266-web-fastled-music distribution (https://github.com/kluevandrew/esp8266-web-fastled-music).
+ * Copyright (c) 2019, Kluev Andrew <kluev.andrew@gmail.com>.
+ *
+ * esp8266-web-fastled-music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+ *
+ * You are free to:
+ *   Share — copy and redistribute the material in any medium or format
+ *   Adapt — remix, transform, and build upon the material
+ *
+ * Under the following terms:
+ *   Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+ *   NonCommercial — You may not use the material for commercial purposes.
+ *   ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+ *   No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+ *
+ * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
+ */
 #include <Application.h>
 #include "AudioAnalyzer.h"
 
@@ -28,14 +42,13 @@ void AudioAnalyzer::analyze() {
         }
     }
 
-    // низкие частоты, выборка со 2 по 5 тон (0 и 1 зашумленные!)
-    int lowEnd = 32;
+    int lowEnd = 32; // @fixme calculate that according to samples count, make it configurable
+    int midEnd = 96; // @fixme calculate that according to samples count, make it configurable too
     for (int i = 2; i < lowEnd; i++) {
         if (vReal[i] > low) {
             low = vReal[i];
         }
     }
-    int midEnd = 96;
     for (int i = lowEnd; i < midEnd; i++) {
         if (vReal[i] > mid) {
             mid = vReal[i];
@@ -49,15 +62,15 @@ void AudioAnalyzer::analyze() {
 
     maxFrequency = max(low, max(mid, high));
     if (maxFrequency < 5) {
-        maxFrequency = 5; // Why AlexGayver? Why?
+        maxFrequency = 5; // Why AlexGayver? Why?  @fixme move to params as minFrequency, make it as param of AudioAnalyzer::analyze(uint8_t minFrequency, int lowPassFilter)
     }
 }
 
 void AudioAnalyzer::sampling() {
     microseconds = micros();
     for (int i = 0; i < samples; i++) {
-        vReal[i] = Application::getInstance().getAdc()->analogRead(0);
-        if (vReal[i] < 650) { // @fixme remove hardcoded LOW_PASS_FILTER
+        vReal[i] = Application::getInstance().getAdc()->analogRead(ADC_MIC_CHANNEL); // @fixme make it dynamically configurable, in case of two mics for example
+        if (vReal[i] < 650) { // @fixme remove hardcoded LOW_PASS_FILTER, make it as param of AudioAnalyzer::sampling(int lowPassFilter)
             vReal[i] = 0;
         }
         vImag[i] = 0;
