@@ -44,39 +44,19 @@ Led *Application::getLed() {
 
 void Application::setup() {
     Serial.begin(115200);
-
     Serial.println();
 
-    setupWifi();
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
-
     SPIFFS.begin();
+    WiFiManager::autoConnect();
 
     webServer->listen();
 }
 
 void Application::loop() {
+#ifndef DISABLE_LED
     led->animate();
+#endif
 }
 
-void Application::setupWifi() {
-    WiFi.setSleepMode(WIFI_NONE_SLEEP);
-    setupWifiClient();
-    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        Serial.printf("WiFi Client Failed! Fallback to AP mode.\n");
-        setupWifiAP();
-        return;
-    }
-}
 
-void Application::setupWifiClient() {
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(WIFI_CLIENT_SSID, WIFI_CLIENT_PASS);
 
-}
-
-void Application::setupWifiAP() {
-    WiFi.mode(WIFI_AP);
-    WiFi.softAP(WIFI_AP_SSID, WIFI_AP_PASS);
-}

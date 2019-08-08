@@ -25,6 +25,7 @@
 #include <audio/AudioAnalyzer.h>
 #include <web/WebServer.h>
 #include <led/Led.h>
+#include <wifi/WiFiManager.h>
 
 class Application {
 public:
@@ -59,11 +60,6 @@ private:
 
     ~Application() = default; // и деструктор
 
-    static void setupWifi();
-
-    static void setupWifiClient();
-
-    static void setupWifiAP();
 };
 
 

@@ -37,6 +37,10 @@ private:
     void configure();
 
     static void notFound(AsyncWebServerRequest *request);
+
+    static ArRequestHandlerFunction emptyAction() {
+        return [](AsyncWebServerRequest *request) {};
+    };
 };
 
 

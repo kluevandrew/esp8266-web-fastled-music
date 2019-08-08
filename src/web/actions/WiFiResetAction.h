@@ -1,7 +1,7 @@
-/*
+/* 
  * This file is part of the esp8266-web-fastled-music distribution (https://github.com/kluevandrew/esp8266-web-fastled-music).
  * Copyright (c) 2019, Kluev Andrew <kluev.andrew@gmail.com>.
- *
+ * 
  * esp8266-web-fastled-music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  *
  * You are free to:
@@ -13,41 +13,19 @@
  *   NonCommercial — You may not use the material for commercial purposes.
  *   ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
  *   No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
- *
+ * 
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#include "WebServer.h"
-#include <web/actions/IndexAction.h>
-#include <web/actions/AudioAction.h>
-#include <web/actions/AdcAction.h>
-#include <web/actions/SetAnimationAction.h>
-#include <web/actions/WiFiSetAction.h>
-#include <web/actions/WiFiResetAction.h>
-#include <web/actions/WiFiScanAction.h>
+#ifndef ESP8266_WEB_FASTLED_MUSIC_WIFIRESETACTION_H
+#define ESP8266_WEB_FASTLED_MUSIC_WIFIRESETACTION_H
 
-WebServer::WebServer() {
-    configure();
-}
 
-WebServer::~WebServer() = default;
+#include "WebAction.h"
 
-void WebServer::listen() {
-    server.begin();
-}
+class WiFiResetAction : public WebAction {
+public:
+    void operator()(AsyncWebServerRequest *request) override;
+};
 
-void WebServer::configure() {
-    server.on("/", HTTP_GET, IndexAction());
-    server.on("/api/v1/audio", HTTP_GET, AudioAction());
-    server.on("/api/v1/adc", HTTP_GET, AdcAction());
 
-    server.on("/api/v1/animation", HTTP_POST, emptyAction(), nullptr, SetAnimationAction());
-    server.on("/api/v1/wifi", HTTP_POST, emptyAction(), nullptr, WiFiSetAction());
-    server.on("/api/v1/wifi", HTTP_DELETE, WiFiResetAction());
-    server.on("/api/v1/wifi", HTTP_GET, WiFiScanAction());
-    server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");;
-    server.onNotFound(&WebServer::notFound);
-}
-
-void WebServer::notFound(AsyncWebServerRequest *request) {
-    request->send(404, "text/plain", "Not found");
-}
+#endif //ESP8266_WEB_FASTLED_MUSIC_WIFIRESETACTION_H
