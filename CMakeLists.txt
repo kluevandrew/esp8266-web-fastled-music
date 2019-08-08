@@ -28,7 +28,7 @@ add_custom_target(
 
 add_custom_target(
     PLATFORMIO_UPLOAD ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target upload
+    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target upload --environment nodemcuv2
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -64,7 +64,7 @@ add_custom_target(
 
 add_custom_target(
     PLATFORMIO_UPLOADFS ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target uploadfs
+    COMMAND ${PLATFORMIO_CMD} -f -c clion run --target uploadfs --environment nodemcuv2
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 

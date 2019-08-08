@@ -11,3 +11,8 @@ if os.path.isfile('device.json'):
                 env.Replace(UPLOAD_FLAGS="$UPLOAD_FLAGS --auth " + data['pass'])
         else:
             env.Replace(UPLOAD_PORT=data['usb'])
+
+
+if "uploadfs" in BUILD_TARGETS:
+    print("uploadfs")
+    env.Execute("npm run build")

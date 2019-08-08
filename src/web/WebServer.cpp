@@ -36,7 +36,7 @@ void WebServer::listen() {
 }
 
 void WebServer::configure() {
-    server.on("/", HTTP_GET, IndexAction());
+    server.on("/api/v1", HTTP_GET, IndexAction());
     server.on("/api/v1/audio", HTTP_GET, AudioAction());
     server.on("/api/v1/adc", HTTP_GET, AdcAction());
 

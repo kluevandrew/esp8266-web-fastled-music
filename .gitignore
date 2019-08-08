@@ -6,3 +6,6 @@ CMakeListsUser.txt
 venv
 device.json
 log.txt
+node_modules
+yarn-error.log
+data
