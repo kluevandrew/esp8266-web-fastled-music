@@ -21,6 +21,7 @@
 
 
 #include <config/config.h>
+#define FASTLED_INTERNAL
 #include <FastLED.h>
 #include <led/animations/LedAnimation.h>
 #include <led/animations/NoopAnimation.h>

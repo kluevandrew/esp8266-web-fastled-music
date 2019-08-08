@@ -39,7 +39,7 @@ private:
     double steps = 0.0;
     int color = 0;
     int period = 1;
-    int speed = 30;
+    unsigned int speed = 30;
 };
 
 

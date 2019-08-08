@@ -17,7 +17,6 @@
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 #include "Led.h"
-#include <config/config.h>
 
 Led::Led() {
     CFastLED::addLeds<LED_TYPE, LED_DATA_PIN, LED_COLOR_ORDER>(strip, LED_LENGTH);

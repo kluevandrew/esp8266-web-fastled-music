@@ -17,25 +17,14 @@
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 #include "Arduino.h"
-
-ADC_MODE(ADC_VCC);
-
 #include "Application.h"
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
+ADC_MODE(ADC_VCC);
 
 void setup() {
     Application::getInstance().setup();
 }
 
-#pragma clang diagnostic pop
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
-
 void loop() {
     Application::getInstance().loop();
 }
-
-#pragma clang diagnostic pop

@@ -48,12 +48,12 @@ void WiFiManager::reset() {
 
 void WiFiManager::connect(const String &ssid, const String &pass) {
     WiFi.begin(ssid.c_str(), pass.c_str(), 0, nullptr, false);
-    ESP.reset();
+    ESP.restart();
 }
 
 void WiFiManager::connect(const String &ssid) {
     WiFi.begin(ssid.c_str(), nullptr, 0, nullptr, false);
-    ESP.reset();
+    ESP.restart();
 }
 
 void WiFiManager::connectSTA() {

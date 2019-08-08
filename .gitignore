@@ -2,3 +2,7 @@
 .pio
 cmake-build-debug
 CMakeListsPrivate.txt
+CMakeListsUser.txt
+venv
+device.json
+log.txt

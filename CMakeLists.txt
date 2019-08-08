@@ -16,13 +16,13 @@ endif()
 
 add_custom_target(
     PLATFORMIO_BUILD ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run
+    COMMAND ${PLATFORMIO_CMD} -f -c clion run --environment nodemcuv2
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
     PLATFORMIO_BUILD_VERBOSE ALL
-    COMMAND ${PLATFORMIO_CMD} -f -c clion run --verbose
+    COMMAND ${PLATFORMIO_CMD} -f -c clion run --verbose --environment nodemcuv2
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -30,6 +30,12 @@ add_custom_target(
     PLATFORMIO_UPLOAD ALL
     COMMAND ${PLATFORMIO_CMD} -f -c clion run --target upload
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_custom_target(
+        PLATFORMIO_UPLOAD_OTA ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run --target upload --environment nodemcuv2ota
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(
@@ -60,6 +66,12 @@ add_custom_target(
     PLATFORMIO_UPLOADFS ALL
     COMMAND ${PLATFORMIO_CMD} -f -c clion run --target uploadfs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_custom_target(
+        PLATFORMIO_UPLOADFS_OTA ALL
+        COMMAND ${PLATFORMIO_CMD} -f -c clion run --target uploadfs --environment nodemcuv2ota
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_custom_target(

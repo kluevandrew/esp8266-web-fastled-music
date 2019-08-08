@@ -1,0 +1,5 @@
+{
+  "ip": "192.168.4.1",
+  "usb": "/dev/cu.wchusbserial1450",
+  "pass": "your value of OTA_PASSWORD"
+}

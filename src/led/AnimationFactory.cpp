@@ -33,7 +33,7 @@
 #include <led/animations/ConfettiAnimation.h>
 
 LedAnimation *AnimationFactory::create(const String &name) {
-    create(name, JsonObject());
+    return create(name, JsonObject());
 }
 
 LedAnimation *AnimationFactory::create(const String &name, const JsonObject &options) {

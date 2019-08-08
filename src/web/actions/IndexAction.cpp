@@ -17,15 +17,45 @@
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 #include "IndexAction.h"
+#include <ArduinoOTA.h>
+#include <config/config.h>
 
 void IndexAction::operator()(AsyncWebServerRequest *request) {
     DynamicJsonDocument response(1024);
 
-    response["version"] = "0.0.1";
+    response["version"] = "0.2.0";
 
     JsonObject developer = response.createNestedObject("developer");
     developer["name"] = "Andrew Kluev";
     developer["email"] = "kluev.andrew@gmail.com";
+
+    JsonObject info = response.createNestedObject("info");
+    info["ota_hostname"] = ArduinoOTA.getHostname();
+#if defined(OTA_PASSWORD)
+    info["ota_secured"] = true;
+#else
+    info["ota_secured"] = false;
+#endif
+    info["vcc"] = ESP.getVcc();
+    info["freeHeap"] = ESP.getFreeHeap();
+    info["maxFreeBlockSize"] = ESP.getMaxFreeBlockSize();
+    info["freeContStack"] = ESP.getFreeContStack();
+    info["chipId"] = ESP.getChipId();
+    info["coreVersion"] = ESP.getCoreVersion();
+    info["sdkVersion"] = ESP.getSdkVersion();
+    info["bootVersion"] = ESP.getBootVersion();
+    info["bootMode"] = ESP.getBootMode();
+    info["cpuFreqMHz"] = ESP.getCpuFreqMHz();
+    info["flashChipId"] = ESP.getFlashChipId();
+    info["flashChipVendorId"] = ESP.getFlashChipVendorId();
+    info["flashChipRealSize"] = ESP.getFlashChipRealSize();
+    info["flashChipSize"] = ESP.getFlashChipSize();
+    info["flashChipSpeed"] = ESP.getFlashChipSpeed();
+    info["resetReason"] = ESP.getResetReason();
+    info["resetInfo"] = ESP.getResetInfo();
+    info["sketchSize"] = ESP.getSketchSize();
+    info["freeSketchSpace"] = ESP.getFreeSketchSpace();
+    info["sketchMD5"] = ESP.getSketchMD5();
 
     json(request, response);
 }

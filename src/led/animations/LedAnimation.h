@@ -21,6 +21,7 @@
 
 
 #include "ArduinoJson.h"
+#define FASTLED_INTERNAL
 #include <FastLED.h>
 #include <config/config.h>
 

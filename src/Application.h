@@ -20,6 +20,7 @@
 #define ESP8266_WEB_FASTLED_MUSIC_APPLICATION_H
 
 #include "config/config.h"
+#define FASTLED_INTERNAL
 #include <FastLED.h>
 #include <adc/ExternalADC.h>
 #include <audio/AudioAnalyzer.h>

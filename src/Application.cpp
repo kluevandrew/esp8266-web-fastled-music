@@ -16,8 +16,9 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#include <led/Led.h>
 #include "Application.h"
+#include <led/Led.h>
+#include <ArduinoOTA.h>
 
 Application::Application() {
     adc = new ExternalADC();
@@ -50,9 +51,16 @@ void Application::setup() {
     WiFiManager::autoConnect();
 
     webServer->listen();
+
+#ifdef OTA_PASSWORD
+    ArduinoOTA.setPassword(OTA_PASSWORD);
+#endif
+    ArduinoOTA.setRebootOnSuccess(true);
+    ArduinoOTA.begin();
 }
 
 void Application::loop() {
+    ArduinoOTA.handle();
 #ifndef DISABLE_LED
     led->animate();
 #endif
