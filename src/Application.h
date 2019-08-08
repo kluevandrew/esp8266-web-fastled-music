@@ -27,6 +27,7 @@
 #include <web/WebServer.h>
 #include <led/Led.h>
 #include <wifi/WiFiManager.h>
+#include <storage/SettingsStorage.h>
 
 class Application {
 public:
@@ -47,6 +48,8 @@ public:
 
     Led *getLed();
 
+    SettingsStorage &getSettingsStorage();
+
     void setup();
 
     void loop();
@@ -56,6 +59,7 @@ private:
     AudioAnalyzer *audioAnalyzer;
     WebServer *webServer;
     Led *led;
+    SettingsStorage *settingsStorage;
 
     Application();
 

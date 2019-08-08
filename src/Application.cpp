@@ -21,6 +21,7 @@
 #include <ArduinoOTA.h>
 
 Application::Application() {
+    settingsStorage = new SettingsStorage();
     adc = new ExternalADC();
     audioAnalyzer = new AudioAnalyzer();
     webServer = new WebServer();
@@ -43,6 +44,10 @@ Led *Application::getLed() {
     return led;
 }
 
+SettingsStorage &Application::getSettingsStorage() {
+    return *settingsStorage;
+}
+
 void Application::setup() {
     Serial.begin(115200);
     Serial.println();
@@ -55,7 +60,31 @@ void Application::setup() {
 #ifdef OTA_PASSWORD
     ArduinoOTA.setPassword(OTA_PASSWORD);
 #endif
-    ArduinoOTA.setRebootOnSuccess(true);
+    ArduinoOTA.onStart([]() {
+        Serial.println("OTA: Start updating" );
+        ArduinoOTA.onEnd([]() {
+            Serial.println("OTA: Done updating");
+            if (ArduinoOTA.getCommand() == U_SPIFFS) {
+                Application::getInstance().getSettingsStorage().save();
+            }
+            ESP.restart();
+        });
+    });
+    ArduinoOTA.onError([](ota_error_t error) {
+        Serial.printf("OTA: Error[%u]: ", error);
+        if (error == OTA_AUTH_ERROR) {
+            Serial.println("Auth Failed");
+        } else if (error == OTA_BEGIN_ERROR) {
+            Serial.println("Begin Failed");
+        } else if (error == OTA_CONNECT_ERROR) {
+            Serial.println("Connect Failed");
+        } else if (error == OTA_RECEIVE_ERROR) {
+            Serial.println("Receive Failed");
+        } else if (error == OTA_END_ERROR) {
+            Serial.println("End Failed");
+        }
+        ESP.restart();
+    });
     ArduinoOTA.begin();
 }
 
@@ -65,6 +94,3 @@ void Application::loop() {
     led->animate();
 #endif
 }
-
-
-
