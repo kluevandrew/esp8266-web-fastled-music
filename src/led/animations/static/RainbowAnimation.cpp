@@ -19,21 +19,12 @@
 #include "RainbowAnimation.h"
 #include <Application.h>
 
-RainbowAnimation::RainbowAnimation(const JsonObject &options) {
-    if (options.containsKey("step")) {
-        step = options["step"];
-    }
-
-    if (options.containsKey("period")) {
-        period = options["period"];
-    }
-
-    if (options.containsKey("speed")) {
-        speed = options["speed"];
-    }
-}
-
 void RainbowAnimation::animate() {
+
+    double step = getOption("RainbowAnimation.step", 0.5);
+    int period = getOption("RainbowAnimation.period", 1);
+    unsigned int speed = getOption("RainbowAnimation.speed", 30);
+
     auto led = Application::getInstance().getLed();
 
     if (millis() - timer > speed) {

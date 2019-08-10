@@ -113,7 +113,6 @@ public:
         return jsonDocument->getOrAddMember(key).set(value);
     };
 
-
     // get(bool value)
     FORCE_INLINE bool get(const char *key) const {
         return jsonDocument->getMember(key);
@@ -183,87 +182,10 @@ public:
         return jsonDocument->getMember(key);
     };
 
-
-
-
-//
-//    template<typename T, typename std::std::enable_if<std::is_arithmetic<T>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<std::is_floating_point<T>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<std::is_integral<T>::value && std::is_signed<T>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<!std::is_same<const char *, T>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<ARDUINOJSON_NAMESPACE::IsString<T>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<ARDUINOJSON_NAMESPACE::IsString<T *>::value>::type * = 0>
-//    T FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    }
-//
-//    bool FORCE_INLINE get(const char *key) {
-//        return jsonDocument->getMember(key);
-//    };
-//
-//    void set(const char *key, bool value) { jsonDocument->getOrAddMember(key).set(value); };
-//
-//    template<typename T, typename std::std::enable_if<std::is_arithmetic<T>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) const {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//    
-//    template<typename T, typename std::std::enable_if<std::is_floating_point<T>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<std::is_integral<T>::value && std::is_signed<T>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<!std::is_same<const char *, T>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<ARDUINOJSON_NAMESPACE::IsString<T>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//
-//    template<typename T, typename std::std::enable_if<ARDUINOJSON_NAMESPACE::IsString<T *>::value>::type * = 0>
-//    void FORCE_INLINE set(const char *key, T value) {
-//        jsonDocument->getOrAddMember(key).set(value);
-//    }
-//
-//    void set(const char *key, const char *value) { jsonDocument->getOrAddMember(key).set(value); };
+    // has(const char *key)
+    FORCE_INLINE bool has(const char *key) const {
+        return jsonDocument->containsKey(key);
+    }
 };
 
 

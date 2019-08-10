@@ -16,26 +16,25 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_STROBEANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_STROBEANIMATION_H
+#include <Application.h>
+#include "DynamicColorAnimation.h"
 
+#define DEFAULT_HUE 0
+#define DEFAULT_SATURATION 255
+#define DEFAULT_BRIGHT 255
+#define DEFAULT_SPEED 100
 
-#include "LedAnimation.h"
-#include <FastLED.h>
+void DynamicColorAnimation::animate() {
+    unsigned long speed = getOption("DynamicColorAnimation.speed", DEFAULT_SPEED);
 
-class StrobeAnimation : public LedAnimation {
-public:
-    explicit StrobeAnimation(const JsonObject &options);
-
-    ~StrobeAnimation() override = default;
-
-    void animate() override;
-
-private:
-    int delay = 200;
-    CRGB colorOn = CRGB::White;
-    CRGB colorOff = CRGB::Black;
-    bool state = false;
-};
-
-#endif //ESP8266_WEB_FASTLED_MUSIC_STROBEANIMATION_H
+    if (millis() - timer > speed) {
+        timer = millis();
+        uint8_t saturation = getOption("DynamicColorAnimation.color.saturation", DEFAULT_SATURATION);
+        uint8_t bright = getOption("DynamicColorAnimation.color.bright", DEFAULT_BRIGHT);
+        if (++color > 360) {
+            color = 0;
+        }
+        Serial.println(color);
+        FastLED.showColor(CHSV(color, saturation, bright));
+    }
+}

@@ -19,24 +19,13 @@
 #include "SpectrumAnalyzerFrequencyAnimation.h"
 #include <Application.h>
 
-SpectrumAnalyzerFrequencyAnimation::SpectrumAnalyzerFrequencyAnimation(const JsonObject &options) : FrequencyAnimation(
-        options) {
-    if (options.containsKey("startColor")) {
-        startColor = options["startColor"];
-    }
-
-    if (options.containsKey("step")) {
-        step = options["step"];
-    }
-
-    if (options.containsKey("smooth")) {
-        step = options["smooth"];
-    }
-}
-
 void SpectrumAnalyzerFrequencyAnimation::animate() {
+    uint8_t startColor = getOption("SpectrumAnalyzerFrequencyAnimation.startColor", 0);
+    uint8_t step = getOption("SpectrumAnalyzerFrequencyAnimation.step", 5);
+    uint8_t smooth = getOption("SpectrumAnalyzerFrequencyAnimation.smooth", 2);
+
     auto led = Application::getInstance().getLed();
-    calculateBright();
+    calculateBright("SpectrumAnalyzer");
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
 
     auto vReal = audioAnalyzer->getVReal();
@@ -54,7 +43,7 @@ void SpectrumAnalyzerFrequencyAnimation::animate() {
 
     int freq_to_stripe = LED_LENGTH / 2 / 40; // /2 cause symmetry, and /20 cause 20 frequencies
 
-    byte huEindex = startColor;
+    byte hueIndex = startColor;
     for (int i = 0; i < LED_LENGTH / 2; i++) {
         byte brightness = map(
                 (long) frequencies[(int) floor(((double) LED_LENGTH / 2 - i) / freq_to_stripe)],
@@ -65,11 +54,11 @@ void SpectrumAnalyzerFrequencyAnimation::animate() {
         );
         brightness = constrain(brightness, 0, 255);
 
-        led->setColorAt(i, CHSV(huEindex, 255, brightness));
+        led->setColorAt(i, CHSV(hueIndex, 255, brightness));
         led->setColorAt(LED_LENGTH - i - 1, led->getColorAt(i));
-        huEindex += step;
-        if (huEindex > 255) {
-            huEindex = 0;
+        hueIndex += step;
+        if (hueIndex > 255) {
+            hueIndex = 0;
         }
     }
 

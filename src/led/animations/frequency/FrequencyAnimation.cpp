@@ -19,42 +19,13 @@
 #include <Application.h>
 #include "FrequencyAnimation.h"
 
-FrequencyAnimation::FrequencyAnimation(const JsonObject &options) {
-    if (options.containsKey("smoothStep")) {
-        smoothStep = options["smoothStep"];
-    }
+void FrequencyAnimation::calculateBright(const String& animationName) {
+    int smoothStep = getOption((animationName + ".smoothStep").c_str(), 20);
+    uint8_t minimalBright = getOption((animationName + ".minimalBright").c_str(), 30);
+    double smoothFrequency = getOption((animationName + ".smoothFrequency").c_str(), 0.8);
+    double maxFrequencyCoefficient = getOption((animationName + ".maxFrequencyCoefficient").c_str(), 1.2);
+    double averageCoefficient = getOption((animationName + ".averageCoefficient").c_str(), 0.006);
 
-    if (options.containsKey("minimalBright")) {
-        minimalBright = options["minimalBright"];
-    }
-
-    if (options.containsKey("smoothFrequency")) {
-        smoothFrequency = options["smoothFrequency"];
-    }
-
-    if (options.containsKey("maxFrequencyCoefficient")) {
-        maxFrequencyCoefficient = options["maxFrequencyCoefficient"];
-    }
-
-    if (options.containsKey("averageCoefficient")) {
-        maxFrequencyCoefficient = options["averageCoefficient"];
-    }
-
-    if (options.containsKey("lowColor")) {
-        lowColor = options["lowColor"];
-    }
-
-    if (options.containsKey("midColor")) {
-        midColor = options["midColor"];
-    }
-
-    if (options.containsKey("highColor")) {
-        highColor = options["highColor"];
-    }
-
-}
-
-void FrequencyAnimation::calculateBright() {
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
     audioAnalyzer->analyze();
 

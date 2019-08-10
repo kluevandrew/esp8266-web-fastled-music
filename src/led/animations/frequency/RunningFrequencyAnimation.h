@@ -16,29 +16,29 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_DIRECTCOLORANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_DIRECTCOLORANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_RUNNINGFREQUENCYANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_RUNNINGFREQUENCYANIMATION_H
 
 
-#include "LedAnimation.h"
-#include <FastLED.h>
+#include <Application.h>
+#include "FrequencyAnimation.h"
 
-class DirectColorAnimation : public LedAnimation {
+class RunningFrequencyAnimation : public FrequencyAnimation {
 public:
-    DirectColorAnimation() = default;
+    RunningFrequencyAnimation() = default;
 
-    explicit DirectColorAnimation(const JsonObject &options);
-
-    ~DirectColorAnimation() override = default;
+    ~RunningFrequencyAnimation() override = default;
 
     void animate() override;
 
+protected:
+    String getName() override {
+        return "RunningFrequencyAnimation";
+    };
+
 private:
-    uint8_t color = 0;
-    uint8_t saturation = 0;
-    uint8_t bright = 255;
-    bool done = false;
+    unsigned long stepTimer = 0;
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_DIRECTCOLORANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_RUNNINGFREQUENCYANIMATION_H

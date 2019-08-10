@@ -16,24 +16,14 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#include "DirectColorAnimation.h"
+#include "StrobeAnimation.h"
 
-DirectColorAnimation::DirectColorAnimation(const JsonObject &options) {
-    if (options.containsKey("color")) {
-        color = options["color"];
-    }
-
-    if (options.containsKey("saturation")) {
-        saturation = options["saturation"];
-    }
-
-    if (options.containsKey("bright")) {
-        bright = options["bright"];
+void StrobeAnimation::animate() {
+    EVERY_N_MILLIS_I(timingObj, delay) {
+        timingObj.setPeriod(delay); // @fixme must be exactly each set on creation
+        FastLED.showColor(state ? colorOn : colorOff);
+        state = !state;
     }
 }
 
-void DirectColorAnimation::animate() {
-    if (!done) {
-        FastLED.showColor(CHSV(color, saturation, bright));
-    }
-}
+

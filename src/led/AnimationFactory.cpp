@@ -19,71 +19,34 @@
 #include "AnimationFactory.h"
 #include "ArduinoJson.h"
 #include <led/animations/NoopAnimation.h>
-#include <led/animations/StrobeAnimation.h>
-#include <led/animations/SimpleFrequencyAnimation.h>
-#include <led/animations/FrequencyStrobeAnimation.h>
-#include <led/animations/RunningFrequencyAnimation.h>
-#include <led/animations/SpectrumAnalyzerFrequencyAnimation.h>
-#include <led/animations/RainbowAnimation.h>
-#include <led/animations/DirectColorAnimation.h>
-#include <led/animations/DynamicColorAnimation.h>
-#include <led/animations/DotBeatAnimation.h>
-#include <led/animations/BlendwaveAnimation.h>
-#include <led/animations/BlurAnimation.h>
-#include <led/animations/ConfettiAnimation.h>
+#include <led/animations/static/StrobeAnimation.h>
+#include <led/animations/frequency/SimpleFrequencyAnimation.h>
+#include <led/animations/frequency/FrequencyStrobeAnimation.h>
+#include <led/animations/frequency/RunningFrequencyAnimation.h>
+#include <led/animations/frequency/SpectrumAnalyzerFrequencyAnimation.h>
+#include <led/animations/static/RainbowAnimation.h>
+#include <led/animations/static/DirectColorAnimation.h>
+#include <led/animations/static/DynamicColorAnimation.h>
+#include <led/animations/static/DotBeatAnimation.h>
+#include <led/animations/static/BlendwaveAnimation.h>
+#include <led/animations/static/BlurAnimation.h>
+#include <led/animations/static/ConfettiAnimation.h>
 
-LedAnimation *AnimationFactory::create(const String &name) {
-    return create(name, JsonObject());
-}
+#define ANIMATION(ANIMATION_NAME, CONSTRUCTOR) if (strcmp(ANIMATION_NAME, name) == 0) { return new CONSTRUCTOR(); }
 
-LedAnimation *AnimationFactory::create(const String &name, const JsonObject &options) {
-    if (name == "strobe") {
-        return new StrobeAnimation(options);
-    }
-
-    if (name == "frequency") {
-        return new SimpleFrequencyAnimation(options);
-    }
-
-    if (name == "frequency_strobe") {
-        return new FrequencyStrobeAnimation(options);
-    }
-
-    if (name == "frequency_running") {
-        return new RunningFrequencyAnimation(options);
-    }
-
-    if (name == "spectrum") {
-        return new SpectrumAnalyzerFrequencyAnimation(options);
-    }
-
-    if (name == "rainbow") {
-        return new RainbowAnimation(options);
-    }
-
-    if (name == "direct") {
-        return new DirectColorAnimation(options);
-    }
-
-    if (name == "dynamic") {
-        return new DynamicColorAnimation(options);
-    }
-
-    if (name == "dot_beat") {
-        return new DotBeatAnimation(options);
-    }
-
-    if (name == "blendwave") {
-        return new BlendwaveAnimation(options);
-    }
-
-    if (name == "blur") {
-        return new BlurAnimation(options);
-    }
-
-    if (name == "confetti") {
-        return new ConfettiAnimation(options);
-    }
+LedAnimation *AnimationFactory::create(const char *name) {
+    ANIMATION("strobe", StrobeAnimation)
+    ANIMATION("frequency", SimpleFrequencyAnimation);
+    ANIMATION("frequency_strobe", FrequencyStrobeAnimation);
+    ANIMATION("frequency_running", RunningFrequencyAnimation);
+    ANIMATION("spectrum", SpectrumAnalyzerFrequencyAnimation);
+    ANIMATION("rainbow", RainbowAnimation);
+    ANIMATION("direct", DirectColorAnimation);
+    ANIMATION("dynamic", DynamicColorAnimation);
+    ANIMATION("dot_beat", DotBeatAnimation);
+    ANIMATION("blendwave", BlendwaveAnimation);
+    ANIMATION("blur", BlurAnimation);
+    ANIMATION("confetti", ConfettiAnimation);
 
     return new NoopAnimation();
 }

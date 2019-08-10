@@ -16,34 +16,29 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_FREQUENCYSTROBEANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_FREQUENCYSTROBEANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_SPECTRUMANALYZERFREQUENCYANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_SPECTRUMANALYZERFREQUENCYANIMATION_H
 
 
+#include <Application.h>
 #include "FrequencyAnimation.h"
 
-class FrequencyStrobeAnimation : public FrequencyAnimation {
+class SpectrumAnalyzerFrequencyAnimation : public FrequencyAnimation {
 public:
-    FrequencyStrobeAnimation() = default;
+    SpectrumAnalyzerFrequencyAnimation() = default;
 
-    explicit FrequencyStrobeAnimation(const JsonObject &options);
-
-    ~FrequencyStrobeAnimation() override = default;
+    ~SpectrumAnalyzerFrequencyAnimation() override = default;
 
     void animate() override;
 
+protected:
+    String getName() override {
+        return "SpectrumAnalyzerFrequencyAnimation";
+    };
+
 private:
-    uint8_t mode = 0;
-    uint8_t emptyColor = HUE_PURPLE;
-
-    void drawHighs();
-
-    void drawMids();
-
-    void drawLows();
-
-    void drawSilence();
+    double frequencies[ADC_SAMPLES / 2]{};
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_FREQUENCYSTROBEANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_SPECTRUMANALYZERFREQUENCYANIMATION_H

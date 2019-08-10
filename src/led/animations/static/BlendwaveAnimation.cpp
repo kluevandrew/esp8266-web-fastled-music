@@ -16,39 +16,27 @@
  * 
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_DOTBEATANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_DOTBEATANIMATION_H
+#include "BlendwaveAnimation.h"
 
+void BlendwaveAnimation::animate(CRGB *strip) {
+    uint8_t bpm1 = getOption("BlendwaveAnimation.bpm1", 6);
+    uint8_t bpm2 = getOption("BlendwaveAnimation.bpm2", 10);
 
-#include "LedAnimation.h"
-#include <FastLED.h>
+    uint8_t speed = beatsin8(bpm1, 0, 255);
 
-class DotBeatAnimation : public LedAnimation {
-public:
-    DotBeatAnimation() = default;
+    color1 = blend(
+            CHSV(beatsin8(3, 0, 255), 255, 255),
+            CHSV(beatsin8(4, 0, 255), 255, 255),
+            speed
+    );
+    color2 = blend(
+            CHSV(beatsin8(4, 0, 255), 255, 255),
+            CHSV(beatsin8(3, 0, 255), 255, 255),
+            speed
+    );
 
-    explicit DotBeatAnimation(const JsonObject &options);
-
-    ~DotBeatAnimation() override = default;
-
-    void animate() override {};
-
-    void animate(CRGB *strip) override;
-
-private:
-    int middleHue = HUE_PURPLE;
-    int innerHue = HUE_BLUE;
-    int outerHue = HUE_AQUA;
-
-    uint8_t middleSaturation = 255;
-    uint8_t innerSaturation = 255;
-    uint8_t outerSaturation = 255;
-
-    uint8_t bright = 255;
-
-    uint8_t bpm = 30;
-    uint8_t fade = 224;
-};
-
-
-#endif //ESP8266_WEB_FASTLED_MUSIC_DOTBEATANIMATION_H
+    uint8_t loc = beatsin8(bpm2, 0, LED_LENGTH - 1);
+    fill_gradient_RGB(strip, 0, color1, loc, color1);
+    fill_gradient_RGB(strip, loc, color2, LED_LENGTH - 1, color1);
+    FastLED.show();
+}

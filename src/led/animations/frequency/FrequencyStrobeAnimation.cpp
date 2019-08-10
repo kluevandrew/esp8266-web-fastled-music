@@ -17,20 +17,11 @@
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 #include "FrequencyStrobeAnimation.h"
-#include <Application.h>
-
-FrequencyStrobeAnimation::FrequencyStrobeAnimation(const JsonObject &options) : FrequencyAnimation(options) {
-    if (options.containsKey("emptyColor")) {
-        emptyColor = options["emptyColor"];
-    }
-
-    if (options.containsKey("mode")) {
-        mode = options["mode"];
-    }
-}
 
 void FrequencyStrobeAnimation::animate() {
-    calculateBright();
+    calculateBright("FrequencyStrobeAnimation");
+    uint8_t mode = getOption("FrequencyStrobeAnimation.mode", 0);
+
     switch (mode) {
         case 1:
             if (flashes[2]) drawHighs();
@@ -59,27 +50,27 @@ void FrequencyStrobeAnimation::animate() {
 void FrequencyStrobeAnimation::drawHighs() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(highColor, 255, bright[2]));
+        led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), bright[2]));
     }
 }
 
 void FrequencyStrobeAnimation::drawMids() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(midColor, 255, bright[1]));
+        led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), bright[1]));
     }
 }
 
 void FrequencyStrobeAnimation::drawLows() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(lowColor, 255, bright[0]));
+        led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), bright[0]));
     }
 }
 
 void FrequencyStrobeAnimation::drawSilence() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(emptyColor, 255, minimalBright));
+        led->setColorAt(i, CHSV(getEmptyColor(), getEmptySaturation(), getMinimalBright()));
     }
 }

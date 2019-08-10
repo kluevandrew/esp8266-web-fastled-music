@@ -29,16 +29,8 @@ SetAnimationAction::operator()(AsyncWebServerRequest *request, uint8_t *data, si
         jsonBadRequest(request);
         return;
     }
-    String name = requestBody["name"];
 
-    LedAnimation *animation;
-    if (requestBody.containsKey("options")) {
-        JsonObject options = requestBody["options"];
-        animation = AnimationFactory::create(name, options);
-    } else {
-        animation = AnimationFactory::create(name);
-    }
-
+    LedAnimation *animation = AnimationFactory::create(requestBody["name"]);
     Application::getInstance().getLed()->setAnimation(animation);
 
     requestBody["status"] = "ok";

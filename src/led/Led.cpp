@@ -16,9 +16,10 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
+#include <led/animations/static/DirectColorAnimation.h>
 #include "Led.h"
 
-Led::Led() {
+Led::Led() : animation(new DirectColorAnimation())  {
     CFastLED::addLeds<LED_TYPE, LED_DATA_PIN, LED_COLOR_ORDER>(strip, LED_LENGTH);
     if (FASTLED_POWER_LIMIT > 0) {
         FastLED.setMaxPowerInVoltsAndMilliamps(5, FASTLED_POWER_LIMIT);
@@ -28,7 +29,9 @@ Led::Led() {
 }
 
 void Led::animate() {
-    this->animation->animate(strip);
+    if (animation) {
+        animation->animate(strip);
+    }
 }
 
 void Led::setColorAt(int index, const CRGB &color) {

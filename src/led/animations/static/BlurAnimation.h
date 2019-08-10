@@ -16,30 +16,24 @@
  * 
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_BLENDWAVEANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_BLENDWAVEANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_BLURANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_BLURANIMATION_H
 
-#include "LedAnimation.h"
+
+#include <Application.h>
+#include <led/animations/ConfigurableLedAnimation.hpp>
 #include <FastLED.h>
 
-class BlendwaveAnimation : public LedAnimation {
+class BlurAnimation : public ConfigurableLedAnimation {
 public:
-    BlendwaveAnimation() = default;
+    BlurAnimation() = default;
 
-    explicit BlendwaveAnimation(const JsonObject &options);
-
-    ~BlendwaveAnimation() override = default;
+    ~BlurAnimation() override = default;
 
     void animate() override {};
 
     void animate(CRGB *strip) override;
-
-private:
-    CRGB color1{};
-    CRGB color2{};
-    uint8_t bpm1 = 6;
-    uint8_t bpm2 = 10;
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_BLENDWAVEANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_BLURANIMATION_H

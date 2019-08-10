@@ -37,13 +37,15 @@ void WebServer::listen() {
 
 void WebServer::configure() {
     server.on("/api/v1/", HTTP_GET, IndexAction());
-    server.on("/api/v1/audio", HTTP_GET, AudioAction());
-    server.on("/api/v1/adc", HTTP_GET, AdcAction());
+    server.on("/api/v1/audio/", HTTP_GET, AudioAction());
+    server.on("/api/v1/adc/", HTTP_GET, AdcAction());
 
-    server.on("/api/v1/animation", HTTP_POST, emptyAction(), nullptr, SetAnimationAction());
-    server.on("/api/v1/wifi", HTTP_POST, emptyAction(), nullptr, WiFiSetAction());
-    server.on("/api/v1/wifi", HTTP_DELETE, WiFiResetAction());
-    server.on("/api/v1/wifi", HTTP_GET, WiFiScanAction());
+    server.on("/api/v1/animation/", HTTP_POST, emptyAction(), nullptr, SetAnimationAction());
+    server.on("/api/v1/wifi/", HTTP_POST, emptyAction(), nullptr, WiFiSetAction());
+    server.on("/api/v1/wifi/", HTTP_DELETE, WiFiResetAction());
+    server.on("/api/v1/wifi/", HTTP_GET, WiFiScanAction());
+    server.on("/api/v1/settings/", HTTP_PUT, emptyAction(), nullptr, SetAnimationAction());
+
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");;
     server.onNotFound(&WebServer::notFound);
 }

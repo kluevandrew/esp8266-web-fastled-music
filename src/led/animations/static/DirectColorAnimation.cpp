@@ -16,28 +16,33 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#include "DynamicColorAnimation.h"
+#include "DirectColorAnimation.h"
 
-DynamicColorAnimation::DynamicColorAnimation(const JsonObject &options) {
-    if (options.containsKey("saturation")) {
-        saturation = options["saturation"];
+#define DEFAULT_HUE 0
+#define DEFAULT_SATURATION 0
+#define DEFAULT_BRIGHT 255
+#define DEFAULT_STEP 1
+#define DEFAULT_SPEED 10
+
+void DirectColorAnimation::animate() {
+    unsigned long speed = getOption("DirectColorAnimation.speed", DEFAULT_SPEED);
+    int color = getOption("DirectColorAnimation.color.hue", DEFAULT_HUE);
+    uint8_t bright = getOption("DirectColorAnimation.color.bright", DEFAULT_BRIGHT);
+    uint8_t saturation = getOption("DirectColorAnimation.color.saturation", DEFAULT_SATURATION);
+    uint8_t step = getOption("DirectColorAnimation.step", DEFAULT_STEP);
+
+    if (color != currentColor || saturation != currentSaturation) {
+        currentColor = color;
+        currentSaturation = saturation;
+        timer = 0;
     }
 
-    if (options.containsKey("bright")) {
-        bright = options["bright"];
-    }
-
-    if (options.containsKey("speed")) {
-        speed = options["speed"];
-    }
-}
-
-void DynamicColorAnimation::animate() {
-    if (millis() - timer > speed) {
+    if (millis() - timer > speed && currentBright < bright) {
         timer = millis();
-        if (++color > 255) {
-            color = 0;
+
+        if (currentBright < bright) {
+            currentBright += step;
+            FastLED.showColor(CHSV(currentColor, currentSaturation, currentBright));
         }
     }
-    FastLED.showColor(CHSV(color, saturation, bright));
 }

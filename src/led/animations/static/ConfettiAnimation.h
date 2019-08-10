@@ -1,7 +1,7 @@
-/*
+/* 
  * This file is part of the esp8266-web-fastled-music distribution (https://github.com/kluevandrew/esp8266-web-fastled-music).
  * Copyright (c) 2019, Kluev Andrew <kluev.andrew@gmail.com>.
- *
+ * 
  * esp8266-web-fastled-music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  *
  * You are free to:
@@ -13,34 +13,39 @@
  *   NonCommercial — You may not use the material for commercial purposes.
  *   ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
  *   No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
- *
+ * 
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_RAINBOWANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_RAINBOWANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_CONFETTIANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_CONFETTIANIMATION_H
 
 
-#include "LedAnimation.h"
+#include <Application.h>
+#include <led/animations/ConfigurableLedAnimation.hpp>
 #include <FastLED.h>
 
-class RainbowAnimation : public LedAnimation {
+/*
+ * @see https://github.com/atuline/FastLED-Demos/blob/master/confetti/confetti.ino
+ */
+class ConfettiAnimation : public ConfigurableLedAnimation {
 public:
-    RainbowAnimation() = default;
+    ConfettiAnimation() = default;
 
-    explicit RainbowAnimation(const JsonObject &options);
+    ~ConfettiAnimation() override = default;
 
-    ~RainbowAnimation() override = default;
+    void animate() override {};
 
-    void animate() override;
+    void animate(CRGB *strip) override;
 
 private:
+    int hue = 50;
+    uint8_t sat = 100;
+    uint8_t bright = 255;
+    int diff = 256;
     unsigned long timer = 0;
-    double step = 0.5;
-    double steps = 0.0;
-    int color = 0;
-    int period = 1;
-    unsigned int speed = 30;
+    uint8_t inc = 1;
+    uint8_t lastSecond = 0;
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_RAINBOWANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_CONFETTIANIMATION_H

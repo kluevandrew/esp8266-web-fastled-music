@@ -1,7 +1,7 @@
-/* 
+/*
  * This file is part of the esp8266-web-fastled-music distribution (https://github.com/kluevandrew/esp8266-web-fastled-music).
  * Copyright (c) 2019, Kluev Andrew <kluev.andrew@gmail.com>.
- * 
+ *
  * esp8266-web-fastled-music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  *
  * You are free to:
@@ -13,31 +13,30 @@
  *   NonCommercial — You may not use the material for commercial purposes.
  *   ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
  *   No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
- * 
+ *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_BLURANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_BLURANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_DIRECTCOLORANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_DIRECTCOLORANIMATION_H
 
 
-#include "LedAnimation.h"
+#include <Application.h>
+#include "led/animations/ConfigurableLedAnimation.hpp"
 #include <FastLED.h>
 
-class BlurAnimation : public LedAnimation {
+class DirectColorAnimation : public ConfigurableLedAnimation {
 public:
-    BlurAnimation() = default;
+    DirectColorAnimation() = default;
+    ~DirectColorAnimation() override = default;
 
-    explicit BlurAnimation(const JsonObject &options);
-
-    ~BlurAnimation() override = default;
-
-    void animate() override {};
-
-    void animate(CRGB *strip) override;
+    void animate() override;
 
 private:
-    uint8_t bpm = 3;
+    int currentColor = 0;
+    uint8_t currentSaturation = 0;
+    uint8_t currentBright = 0;
+    unsigned long timer = 0;
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_BLURANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_DIRECTCOLORANIMATION_H

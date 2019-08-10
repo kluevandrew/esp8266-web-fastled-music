@@ -20,20 +20,21 @@
 #define ESP8266_WEB_FASTLED_MUSIC_SIMPLEFREQUENCYANIMATION_H
 
 
+#include <Application.h>
 #include "FrequencyAnimation.h"
 
 class SimpleFrequencyAnimation : public FrequencyAnimation {
 public:
     SimpleFrequencyAnimation() = default;
 
-    explicit SimpleFrequencyAnimation(const JsonObject &options);
-
     ~SimpleFrequencyAnimation() override = default;
 
     void animate() override;
 
 protected:
-    String direction = "ltr";
+    String getName() override {
+        return "SimpleFrequencyAnimation";
+    };
 };
 
 

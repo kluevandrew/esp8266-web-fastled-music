@@ -60,7 +60,3 @@ void SettingsStorage::save() {
     configFile.close();
 }
 
-//JsonVariant SettingsStorage::get(const char *key) {
-//    return (*jsonDocument)[key];
-//}
-

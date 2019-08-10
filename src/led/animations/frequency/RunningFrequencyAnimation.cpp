@@ -19,25 +19,14 @@
 #include "RunningFrequencyAnimation.h"
 #include <Application.h>
 
-RunningFrequencyAnimation::RunningFrequencyAnimation(const JsonObject &options) : FrequencyAnimation(options) {
-    if (options.containsKey("emptyColor")) {
-        emptyColor = options["emptyColor"];
-    }
-
-    if (options.containsKey("mode")) {
-        mode = options["mode"];
-    }
-
-    if (options.containsKey("speed")) {
-        speed = options["speed"];
-    }
-}
-
 void RunningFrequencyAnimation::animate() {
-    auto led = Application::getInstance().getLed();
-    calculateBright();
+    uint8_t mode = getOption("RunningFrequencyAnimation.mode", 0);
+    unsigned long speed = getOption("RunningFrequencyAnimation.speed", 11);
 
-    led->setColorAt(LED_LENGTH / 2, CHSV(emptyColor, 255, minimalBright));
+    auto led = Application::getInstance().getLed();
+    calculateBright("RunningFrequencyAnimation");
+
+    led->setColorAt(LED_LENGTH / 2, CHSV(getEmptyColor(), getEmptySaturation(), getMidSaturation()));
     int countOfVariants = 0;
     countOfVariants += (int) running[0];
     countOfVariants += (int) running[1];
@@ -53,27 +42,29 @@ void RunningFrequencyAnimation::animate() {
                     running[2] = maximum == levels[2];
                 }
                 if (running[0]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(lowColor, 255, bright[0]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getLowColor(), getLowColor(), bright[0]));
                 } else if (running[1]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(midColor, 255, bright[1]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getMidColor(), getMidSaturation(), bright[1]));
                 } else if (running[2]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(highColor, 255, bright[2]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getHighColor(), getHighSaturation(), bright[2]));
                 }
                 break;
             case 1:
                 if (running[2]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(highColor, 255, bright[2]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getHighColor(), getHighSaturation(), bright[2]));
                 }
                 break;
             case 2:
                 if (running[1]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(midColor, 255, bright[1]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getMidColor(), getMidSaturation(), bright[1]));
                 }
                 break;
             case 3:
                 if (running[0]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(lowColor, 255, bright[0]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getLowColor(), getLowColor(), bright[0]));
                 }
+                break;
+            default:
                 break;
         }
     }

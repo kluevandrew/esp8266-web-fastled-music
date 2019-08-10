@@ -18,21 +18,22 @@
  */
 #include "DotBeatAnimation.h"
 
-DotBeatAnimation::DotBeatAnimation(const JsonObject &options) {
-    if (options.containsKey("middleHue")) { middleHue = options["middleHue"]; }
-    if (options.containsKey("innerHue")) { innerHue = options["innerHue"]; }
-    if (options.containsKey("outerHue")) { outerHue = options["outerHue"]; }
-    if (options.containsKey("middleSaturation")) { middleSaturation = options["middleSaturation"]; }
-    if (options.containsKey("innerSaturation")) { innerSaturation = options["innerSaturation"]; }
-    if (options.containsKey("outerSaturation")) { outerSaturation = options["outerSaturation"]; }
-    if (options.containsKey("bright")) { bright = options["bright"]; }
-    if (options.containsKey("bpm")) { bpm = options["bpm"]; }
-    if (options.containsKey("fade")) { fade = options["fade"]; }
-}
-
 void DotBeatAnimation::animate(CRGB *strip) {
+    int middleHue = getOption("DotBeatAnimation.middle.sue", (int)HUE_PURPLE);
+    int innerHue = getOption("DotBeatAnimation.inner.sue", (int)HUE_BLUE);
+    int outerHue = getOption("DotBeatAnimation.outer.sue", (int)HUE_AQUA);
+
+    uint8_t middleSaturation = getOption("DotBeatAnimation.middle.saturation", 255);
+    uint8_t innerSaturation = getOption("DotBeatAnimation.inner.saturation", 255);
+    uint8_t outerSaturation = getOption("DotBeatAnimation.outer.saturation", 255);
+
+    uint8_t bright = getOption("DotBeatAnimation.bright", 255);
+
+    uint8_t bpm = getOption("DotBeatAnimation.bpm", 33);
+    uint8_t fade = getOption("DotBeatAnimation.fade", 224);
+
     uint8_t inner = beatsin8(bpm, LED_LENGTH / 4, LED_LENGTH / 4 * 3);    // Move 1/4 to 3/4
-    uint8_t outer = beatsin8(bpm, 0, LED_LENGTH - 1);               // Move entire length
+    uint8_t outer = beatsin8(bpm, 0, LED_LENGTH - 1);                     // Move entire length
     uint8_t middle = beatsin8(bpm, LED_LENGTH / 3, LED_LENGTH / 3 * 2);   // Move 1/3 to 2/3
 
     strip[middle] = CHSV(middleHue, middleSaturation, bright);
