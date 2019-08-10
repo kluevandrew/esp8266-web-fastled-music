@@ -20,24 +20,26 @@
 #include <config/config.h>
 #include "WiFiManager.h"
 
-WiFiManager::WiFiManager() {
+bool WiFiManager::autoConnect() {
     WiFi.setSleepMode(WIFI_NONE_SLEEP);
-}
 
-WiFiManager::~WiFiManager() = default;
-
-void WiFiManager::autoConnect() {
     connectSTA();
     if (WiFi.waitForConnectResult() != WL_CONNECTED) {
         Serial.printf("WiFi Client Failed! Fallback to AP mode.\n");
         connectAP();
+        if (WiFi.waitForConnectResult() != WL_CONNECTED) {
+            Serial.printf("WiFi AP Failed!\n");
+        }
         Serial.print("IP Address: ");
         Serial.println(WiFi.softAPIP());
+        WiFi.scanNetworks(true, true);
+        return true;
     } else {
         Serial.print("IP Address: ");
         Serial.println(WiFi.localIP());
     }
     WiFi.scanNetworks(true, true);
+    return false;
 }
 
 void WiFiManager::reset() {

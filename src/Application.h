@@ -65,6 +65,7 @@ private:
 
     ~Application() = default; // и деструктор
 
+    bool apMode = false;
 };
 
 

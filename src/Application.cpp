@@ -53,43 +53,47 @@ void Application::setup() {
     Serial.println();
 
     SPIFFS.begin();
-    WiFiManager::autoConnect();
+    apMode = WiFiManager::autoConnect();
 
-    webServer->listen();
-
+    if (!apMode) {
+        Serial.println("OTA: Configured");
 #ifdef OTA_PASSWORD
-    ArduinoOTA.setPassword(OTA_PASSWORD);
+        ArduinoOTA.setPassword(OTA_PASSWORD);
 #endif
-    ArduinoOTA.onStart([]() {
-        Serial.println("OTA: Start updating" );
-        ArduinoOTA.onEnd([]() {
-            Serial.println("OTA: Done updating");
-            if (ArduinoOTA.getCommand() == U_SPIFFS) {
-                Application::getInstance().getSettingsStorage().save();
+        ArduinoOTA.onStart([]() {
+            Serial.println("OTA: Start updating");
+            ArduinoOTA.onEnd([]() {
+                Serial.println("OTA: Done updating");
+                if (ArduinoOTA.getCommand() == U_SPIFFS) {
+                    Application::getInstance().getSettingsStorage().save();
+                }
+                ESP.restart();
+            });
+        });
+        ArduinoOTA.onError([](ota_error_t error) {
+            Serial.printf("OTA: Error[%u]: ", error);
+            if (error == OTA_AUTH_ERROR) {
+                Serial.println("Auth Failed");
+            } else if (error == OTA_BEGIN_ERROR) {
+                Serial.println("Begin Failed");
+            } else if (error == OTA_CONNECT_ERROR) {
+                Serial.println("Connect Failed");
+            } else if (error == OTA_RECEIVE_ERROR) {
+                Serial.println("Receive Failed");
+            } else if (error == OTA_END_ERROR) {
+                Serial.println("End Failed");
             }
             ESP.restart();
         });
-    });
-    ArduinoOTA.onError([](ota_error_t error) {
-        Serial.printf("OTA: Error[%u]: ", error);
-        if (error == OTA_AUTH_ERROR) {
-            Serial.println("Auth Failed");
-        } else if (error == OTA_BEGIN_ERROR) {
-            Serial.println("Begin Failed");
-        } else if (error == OTA_CONNECT_ERROR) {
-            Serial.println("Connect Failed");
-        } else if (error == OTA_RECEIVE_ERROR) {
-            Serial.println("Receive Failed");
-        } else if (error == OTA_END_ERROR) {
-            Serial.println("End Failed");
-        }
-        ESP.restart();
-    });
-    ArduinoOTA.begin();
+        ArduinoOTA.begin();
+    }
+    webServer->listen();
 }
 
 void Application::loop() {
-    ArduinoOTA.handle();
+    if (!apMode) {
+        ArduinoOTA.handle();
+    }
 #ifndef DISABLE_LED
     led->animate();
 #endif

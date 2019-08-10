@@ -24,11 +24,7 @@
 
 class WiFiManager {
 public:
-    explicit WiFiManager();
-
-    ~WiFiManager();
-
-    static void autoConnect();
+    static bool autoConnect();
 
     static void reset();
 
@@ -52,6 +48,10 @@ public:
     };
 
     static ScanResult scan();
+
+    static bool isInApMode() {
+        return WiFi.getMode() == WIFI_AP;
+    }
 
 private:
     static void connectSTA();
