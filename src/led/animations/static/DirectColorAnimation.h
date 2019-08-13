@@ -32,6 +32,7 @@ public:
     void animate() override;
 
 private:
+    unsigned long currentSpeed = 0;
     int currentColor = 0;
     uint8_t currentSaturation = 0;
     uint8_t currentBright = 0;

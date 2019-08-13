@@ -65,6 +65,7 @@ void RunningFrequencyAnimation::animate() {
                 }
                 break;
             default:
+                led->setColorAt(LED_LENGTH / 2, CRGB::Black);
                 break;
         }
     }

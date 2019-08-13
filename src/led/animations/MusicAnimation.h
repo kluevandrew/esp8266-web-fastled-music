@@ -16,21 +16,21 @@
  *
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_FREQUENCYANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_FREQUENCYANIMATION_H
+#ifndef ESP8266_WEB_FASTLED_MUSIC_MUSICANIMATION_H
+#define ESP8266_WEB_FASTLED_MUSIC_MUSICANIMATION_H
 
 
 #include <Application.h>
 #include <led/animations/ConfigurableLedAnimation.hpp>
 #include <FastLED.h>
 
-class FrequencyAnimation : public ConfigurableLedAnimation {
+class MusicAnimation : public ConfigurableLedAnimation {
 public:
-    FrequencyAnimation() = default;
+    MusicAnimation() = default;
 
-    explicit FrequencyAnimation(const JsonObject &options);
+    explicit MusicAnimation(const JsonObject &options);
 
-    ~FrequencyAnimation() override = default;
+    ~MusicAnimation() override = default;
 
 protected:
     int bright[3] = {0, 0, 0};
@@ -82,4 +82,4 @@ protected:
 };
 
 
-#endif //ESP8266_WEB_FASTLED_MUSIC_FREQUENCYANIMATION_H
+#endif //ESP8266_WEB_FASTLED_MUSIC_MUSICANIMATION_H

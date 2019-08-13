@@ -19,10 +19,10 @@
 #include "DirectColorAnimation.h"
 
 #define DEFAULT_HUE 0
-#define DEFAULT_SATURATION 0
-#define DEFAULT_BRIGHT 255
-#define DEFAULT_STEP 1
-#define DEFAULT_SPEED 10
+#define DEFAULT_SATURATION 255
+#define DEFAULT_BRIGHT 128
+#define DEFAULT_STEP 5
+#define DEFAULT_SPEED 5
 
 void DirectColorAnimation::animate() {
     unsigned long speed = getOption("DirectColorAnimation.speed", DEFAULT_SPEED);
@@ -31,17 +31,33 @@ void DirectColorAnimation::animate() {
     uint8_t saturation = getOption("DirectColorAnimation.color.saturation", DEFAULT_SATURATION);
     uint8_t step = getOption("DirectColorAnimation.step", DEFAULT_STEP);
 
-    if (color != currentColor || saturation != currentSaturation) {
+    if (currentColor != color || currentSaturation != saturation || currentSpeed != speed) {
+        currentSpeed = speed;
         currentColor = color;
         currentSaturation = saturation;
+        currentBright = 0;
         timer = 0;
     }
 
-    if (millis() - timer > speed && currentBright < bright) {
+    if (millis() - timer > currentSpeed && currentBright != bright) {
         timer = millis();
 
         if (currentBright < bright) {
-            currentBright += step;
+            if (currentBright > bright) {
+                if (currentBright - step < bright) {
+                    currentBright = bright;
+                } else {
+                    currentBright -= step;
+                }
+                currentBright -= step;
+            } else {
+                if (currentBright + step > bright) {
+                    currentBright = bright;
+                } else {
+                    currentBright += step;
+                }
+            }
+
             FastLED.showColor(CHSV(currentColor, currentSaturation, currentBright));
         }
     }

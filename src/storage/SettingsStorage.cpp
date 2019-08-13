@@ -43,7 +43,6 @@ void SettingsStorage::load() {
     }
 
     configFile.close();
-    save();
 }
 
 void SettingsStorage::save() {
@@ -58,5 +57,12 @@ void SettingsStorage::save() {
 
     serializeJson(*jsonDocument, configFile);
     configFile.close();
+}
+
+void SettingsStorage::truncate() {
+    SPIFFS.remove("/config.json");
+    delete(jsonDocument);
+    jsonDocument = new DynamicJsonDocument(SETTINGS_CAPACITY);
+    save();
 }
 

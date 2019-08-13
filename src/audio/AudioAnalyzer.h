@@ -37,7 +37,9 @@ public:
     */
     ~AudioAnalyzer();
 
-    void analyze();
+    void analyzeFrequency();
+
+    void analyzeLevels();
 
     double getLastMajorPeak();
 
@@ -51,6 +53,12 @@ public:
 
     double getMaxFrequency() const;
 
+    int RsoundLevel{};
+    int LsoundLevel{};
+    int RcurrentLevel{};
+    int LcurrentLevel{};
+    float RsoundLevel_f{};
+    float LsoundLevel_f{};
 private:
     arduinoFFT fft;
     static const uint16_t samples = ADC_SAMPLES; // This value MUST ALWAYS be a power of 2
@@ -62,7 +70,6 @@ private:
     double lastMajorPeak{};
     double maxFrequency{};
 
-private:
     uint8_t high{};
     uint8_t low{};
     uint8_t mid{};

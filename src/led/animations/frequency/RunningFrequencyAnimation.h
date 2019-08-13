@@ -21,9 +21,9 @@
 
 
 #include <Application.h>
-#include "FrequencyAnimation.h"
+#include "led/animations/MusicAnimation.h"
 
-class RunningFrequencyAnimation : public FrequencyAnimation {
+class RunningFrequencyAnimation : public MusicAnimation {
 public:
     RunningFrequencyAnimation() = default;
 

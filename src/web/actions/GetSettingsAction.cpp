@@ -1,7 +1,7 @@
-/*
+/* 
  * This file is part of the esp8266-web-fastled-music distribution (https://github.com/kluevandrew/esp8266-web-fastled-music).
  * Copyright (c) 2019, Kluev Andrew <kluev.andrew@gmail.com>.
- *
+ * 
  * esp8266-web-fastled-music is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  *
  * You are free to:
@@ -13,29 +13,25 @@
  *   NonCommercial — You may not use the material for commercial purposes.
  *   ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
  *   No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
- *
+ * 
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
-#ifndef ESP8266_WEB_FASTLED_MUSIC_SIMPLEFREQUENCYANIMATION_H
-#define ESP8266_WEB_FASTLED_MUSIC_SIMPLEFREQUENCYANIMATION_H
-
-
 #include <Application.h>
-#include "led/animations/MusicAnimation.h"
+#include "GetSettingsAction.h"
 
-class SimpleFrequencyAnimation : public MusicAnimation {
-public:
-    SimpleFrequencyAnimation() = default;
+void GetSettingsAction::operator()(AsyncWebServerRequest *request) {
+    auto settings = Application::getInstance().getSettingsStorage();
 
-    ~SimpleFrequencyAnimation() override = default;
+    DynamicJsonDocument response(1024);
 
-    void animate() override;
+    if (!request->hasParam("key")) {
+        jsonBadRequest(request);
+        return;
+    }
 
-protected:
-    String getName() override {
-        return "SimpleFrequencyAnimation";
-    };
-};
+    String key = request->getParam("key")->value();
+    response["exist"] = settings.has(key);
+    response["value"] = settings.get(key);
 
-
-#endif //ESP8266_WEB_FASTLED_MUSIC_SIMPLEFREQUENCYANIMATION_H
+    json(request, response);
+}

@@ -17,9 +17,9 @@
  * For additional information, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 #include <Application.h>
-#include "FrequencyAnimation.h"
+#include "MusicAnimation.h"
 
-void FrequencyAnimation::calculateBright(const String& animationName) {
+void MusicAnimation::calculateBright(const String& animationName) {
     int smoothStep = getOption((animationName + ".smoothStep").c_str(), 20);
     uint8_t minimalBright = getOption((animationName + ".minimalBright").c_str(), 30);
     double smoothFrequency = getOption((animationName + ".smoothFrequency").c_str(), 0.8);
@@ -27,7 +27,7 @@ void FrequencyAnimation::calculateBright(const String& animationName) {
     double averageCoefficient = getOption((animationName + ".averageCoefficient").c_str(), 0.006);
 
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
-    audioAnalyzer->analyze();
+    audioAnalyzer->analyzeFrequency();
 
     double newLevels[3];
     newLevels[0] = audioAnalyzer->getLow();

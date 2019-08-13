@@ -36,6 +36,8 @@ public:
 
     void setColorAt(int index, const CRGB &color);
 
+    void setColorAt(int index, const CHSV &color);
+
     CRGB getColorAt(int index);
 
     LedAnimation *getAnimation() const;

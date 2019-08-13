@@ -21,9 +21,9 @@
 
 
 #include <Application.h>
-#include "FrequencyAnimation.h"
+#include "led/animations/MusicAnimation.h"
 
-class SpectrumAnalyzerFrequencyAnimation : public FrequencyAnimation {
+class SpectrumAnalyzerFrequencyAnimation : public MusicAnimation {
 public:
     SpectrumAnalyzerFrequencyAnimation() = default;
 

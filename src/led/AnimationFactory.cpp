@@ -31,6 +31,7 @@
 #include <led/animations/static/BlendwaveAnimation.h>
 #include <led/animations/static/BlurAnimation.h>
 #include <led/animations/static/ConfettiAnimation.h>
+#include <led/animations/uv/UvMeterAnimation.h>
 
 #define ANIMATION(ANIMATION_NAME, CONSTRUCTOR) if (strcmp(ANIMATION_NAME, name) == 0) { return new CONSTRUCTOR(); }
 
@@ -47,6 +48,7 @@ LedAnimation *AnimationFactory::create(const char *name) {
     ANIMATION("blendwave", BlendwaveAnimation);
     ANIMATION("blur", BlurAnimation);
     ANIMATION("confetti", ConfettiAnimation);
+    ANIMATION("uv", UvMeterAnimation);
 
     return new NoopAnimation();
 }

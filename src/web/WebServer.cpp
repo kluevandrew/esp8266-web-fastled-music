@@ -21,6 +21,9 @@
 #include <web/actions/AudioAction.h>
 #include <web/actions/AdcAction.h>
 #include <web/actions/SetAnimationAction.h>
+#include <web/actions/PutSettingsAction.h>
+#include <web/actions/GetSettingsAction.h>
+#include <web/actions/DeleteSettingsAction.h>
 #include <web/actions/WiFiSetAction.h>
 #include <web/actions/WiFiResetAction.h>
 #include <web/actions/WiFiScanAction.h>
@@ -44,7 +47,9 @@ void WebServer::configure() {
     server.on("/api/v1/wifi/", HTTP_POST, emptyAction(), nullptr, WiFiSetAction());
     server.on("/api/v1/wifi/", HTTP_DELETE, WiFiResetAction());
     server.on("/api/v1/wifi/", HTTP_GET, WiFiScanAction());
-    server.on("/api/v1/settings/", HTTP_PUT, emptyAction(), nullptr, SetAnimationAction());
+    server.on("/api/v1/settings/", HTTP_GET, GetSettingsAction());
+    server.on("/api/v1/settings/", HTTP_PUT, emptyAction(), nullptr, PutSettingsAction());
+    server.on("/api/v1/settings/", HTTP_DELETE, DeleteSettingsAction());
 
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");;
     server.onNotFound(&WebServer::notFound);

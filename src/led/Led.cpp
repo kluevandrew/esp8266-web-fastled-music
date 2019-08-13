@@ -25,7 +25,6 @@ Led::Led() : animation(new DirectColorAnimation())  {
         FastLED.setMaxPowerInVoltsAndMilliamps(5, FASTLED_POWER_LIMIT);
     }
     FastLED.showColor(CRGB::Black);
-    FastLED.setBrightness(LED_DEFAULT_BRIGHTNESS);
 }
 
 void Led::animate() {
@@ -35,6 +34,10 @@ void Led::animate() {
 }
 
 void Led::setColorAt(int index, const CRGB &color) {
+    strip[index] = color;
+}
+
+void Led::setColorAt(int index, const CHSV &color) {
     strip[index] = color;
 }
 

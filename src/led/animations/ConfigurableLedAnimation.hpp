@@ -22,16 +22,11 @@
 
 #include <Application.h>
 
-class ConfigurableLedAnimation: public LedAnimation {
+class ConfigurableLedAnimation : public LedAnimation {
 protected:
-    template<typename Type>
-    Type getOption(const char *path, Type defaultValue) {
-        auto settings = Application::getInstance().getSettingsStorage();
-        if (settings.has(path)) {
-            return settings.get(path);
-        }
-
-        return defaultValue;
+    template<typename T>
+    T getOption(const String &key, T defaultValue) {
+        return Application::getInstance().getSettingsStorage().get<T>(key, defaultValue);
     }
 };
 

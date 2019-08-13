@@ -21,7 +21,7 @@
 
 void AudioAction::operator()(AsyncWebServerRequest *request) {
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
-    audioAnalyzer->analyze();
+    audioAnalyzer->analyzeFrequency();
 
     DynamicJsonDocument response(1024);
 
