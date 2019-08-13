@@ -19,9 +19,10 @@
 #include "ConfettiAnimation.h"
 
 void ConfettiAnimation::animate(CRGB *strip) {
-    uint8_t duration = getOption("ConfettiAnimation.duration", 15);
-    uint8_t delay = getOption("ConfettiAnimation.delay", 5);
-    uint8_t fade = getOption("ConfettiAnimation.fade", 8);
+    uint8_t duration = getLimitedByteOption("ConfettiAnimation.duration", 15, 1);
+    uint8_t delay = getLimitedByteOption("ConfettiAnimation.delay", 5, 1);
+    uint8_t fade = getLimitedByteOption("ConfettiAnimation.fade", 8, 1);
+    uint8_t bright = getLimitedByteOption("ConfettiAnimation.bright", 128);
 
     uint8_t secondHand = (millis() / 1000) % duration;
     if (lastSecond != secondHand) {                             // Debounce to make sure we're not repeating an assignment.

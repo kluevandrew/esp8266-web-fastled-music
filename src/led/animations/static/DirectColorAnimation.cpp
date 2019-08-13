@@ -24,41 +24,37 @@
 #define DEFAULT_STEP 5
 #define DEFAULT_SPEED 5
 
+#define DO_STEP(CURRENT_NAME, NAME) if (CURRENT_NAME > NAME) { \
+                                        if ((CURRENT_NAME - step) < NAME) { \
+                                            CURRENT_NAME = NAME; \
+                                        } else { \
+                                            CURRENT_NAME -= step; \
+                                        } \
+                                    } else if (CURRENT_NAME < NAME) { \
+                                        if ((CURRENT_NAME + step) > NAME) { \
+                                            CURRENT_NAME = NAME; \
+                                        } else { \
+                                            CURRENT_NAME += step; \
+                                        } \
+                                    }
+
 void DirectColorAnimation::animate() {
-    unsigned long speed = getOption("DirectColorAnimation.speed", DEFAULT_SPEED);
-    int color = getOption("DirectColorAnimation.color.hue", DEFAULT_HUE);
-    uint8_t bright = getOption("DirectColorAnimation.color.bright", DEFAULT_BRIGHT);
-    uint8_t saturation = getOption("DirectColorAnimation.color.saturation", DEFAULT_SATURATION);
-    uint8_t step = getOption("DirectColorAnimation.step", DEFAULT_STEP);
-
-    if (currentColor != color || currentSaturation != saturation || currentSpeed != speed) {
-        currentSpeed = speed;
-        currentColor = color;
-        currentSaturation = saturation;
-        currentBright = 0;
-        timer = 0;
+    unsigned long speed = max(10, getOption("DirectColorAnimation.speed", DEFAULT_SPEED));
+    if (millis() - timer <= speed) {
+        return;
     }
+    timer = millis();
 
-    if (millis() - timer > currentSpeed && currentBright != bright) {
-        timer = millis();
+    unsigned int color = getHueOption("DirectColorAnimation.color.hue", DEFAULT_HUE);
+    uint8_t bright = getOption("DirectColorAnimation.color.bright", DEFAULT_BRIGHT);
+    uint8_t saturation = getOption("DirectColorAnimation.color.sat", DEFAULT_SATURATION);
+    uint8_t step = max(1, getOption<int>("DirectColorAnimation.step", DEFAULT_STEP));
 
-        if (currentBright < bright) {
-            if (currentBright > bright) {
-                if (currentBright - step < bright) {
-                    currentBright = bright;
-                } else {
-                    currentBright -= step;
-                }
-                currentBright -= step;
-            } else {
-                if (currentBright + step > bright) {
-                    currentBright = bright;
-                } else {
-                    currentBright += step;
-                }
-            }
+    if (currentColor != color || currentSaturation != saturation || currentBright != bright) {
+        DO_STEP(currentColor, color);
+        DO_STEP(currentSaturation, saturation);
+        DO_STEP(currentBright, bright);
 
-            FastLED.showColor(CHSV(currentColor, currentSaturation, currentBright));
-        }
+        FastLED.showColor(CHSV(currentColor, currentSaturation, currentBright));
     }
 }

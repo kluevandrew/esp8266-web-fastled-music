@@ -39,6 +39,10 @@ void WebServer::listen() {
 }
 
 void WebServer::configure() {
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "*");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods", "*");
+
     server.on("/api/v1/", HTTP_GET, IndexAction());
     server.on("/api/v1/audio/", HTTP_GET, AudioAction());
     server.on("/api/v1/adc/", HTTP_GET, AdcAction());
@@ -56,5 +60,9 @@ void WebServer::configure() {
 }
 
 void WebServer::notFound(AsyncWebServerRequest *request) {
+    if (request->method() == HTTP_OPTIONS) {
+        request->send(200);
+        return;
+    }
     request->send(404, "text/plain", "Not found");
 }

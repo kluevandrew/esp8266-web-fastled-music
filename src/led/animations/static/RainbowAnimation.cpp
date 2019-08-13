@@ -21,9 +21,10 @@
 
 void RainbowAnimation::animate() {
 
-    double step = getOption("RainbowAnimation.step", 0.5);
-    int period = getOption("RainbowAnimation.period", 1);
-    unsigned int speed = getOption("RainbowAnimation.speed", 30);
+    unsigned int step = max(getOption<int>("RainbowAnimation.step", 1), 1);
+    unsigned int period = max(getOption<int>("RainbowAnimation.period", 1), 1);
+    unsigned int speed = max(getOption<int>("RainbowAnimation.speed", 30), 1);
+    uint8_t bright = getLimitedByteOption("RainbowAnimation.bright", 128);
 
     auto led = Application::getInstance().getLed();
 
@@ -39,7 +40,7 @@ void RainbowAnimation::animate() {
     }
     steps = color;
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV((int) floor(steps), 255, 255));
+        led->setColorAt(i, CHSV(steps, 255, bright));
         steps += step;
         if (steps > 255) {
             steps = 0;

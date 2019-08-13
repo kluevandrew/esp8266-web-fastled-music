@@ -29,7 +29,7 @@ void DynamicColorAnimation::animate() {
 
     if (millis() - timer > speed) {
         timer = millis();
-        uint8_t saturation = getOption("DynamicColorAnimation.color.saturation", DEFAULT_SATURATION);
+        uint8_t saturation = getOption("DynamicColorAnimation.color.sat", DEFAULT_SATURATION);
         uint8_t bright = getOption("DynamicColorAnimation.color.bright", DEFAULT_BRIGHT);
         if (++color > 360) {
             color = 0;

@@ -23,9 +23,9 @@ void DotBeatAnimation::animate(CRGB *strip) {
     int innerHue = getOption("DotBeatAnimation.inner.sue", (int)HUE_BLUE);
     int outerHue = getOption("DotBeatAnimation.outer.sue", (int)HUE_AQUA);
 
-    uint8_t middleSaturation = getOption("DotBeatAnimation.middle.saturation", 255);
-    uint8_t innerSaturation = getOption("DotBeatAnimation.inner.saturation", 255);
-    uint8_t outerSaturation = getOption("DotBeatAnimation.outer.saturation", 255);
+    uint8_t middleSaturation = getOption("DotBeatAnimation.middle.sat", 255);
+    uint8_t innerSaturation = getOption("DotBeatAnimation.inner.sat", 255);
+    uint8_t outerSaturation = getOption("DotBeatAnimation.outer.sat", 255);
 
     uint8_t bright = getOption("DotBeatAnimation.bright", 255);
 

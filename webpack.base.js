@@ -6,26 +6,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const Autoprefixer = require('autoprefixer');
-const fg = require('fast-glob');
 
 const PATHS = {
     root: path.resolve(__dirname, './'),
     source: path.join(__dirname, './ui'),
     build: path.join(__dirname, './data')
 };
-
-function html(glob) {
-    return fg.sync(glob).map(function (file) {
-        const name = path.basename(file);
-        if (name[0] === '_') {
-            return null;
-        }
-        return new HtmlWebpackPlugin({
-            filename: file.replace('./ui/', '').replace('.twig', '.html'),
-            template: `${PATHS.source}/${file.replace('./ui/', '')}`,
-        });
-    }).filter((i) => i !== null);
-}
 
 module.exports = {
     mode: 'production',
@@ -43,10 +29,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.twig/,
-                loader: 'twig-loader'
-            },
             {
                 test: /\.ts$/,
                 loader: 'ts-loader',
@@ -66,12 +48,19 @@ module.exports = {
                     'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
                 ]
             },
+            {
+                test: /\.twig/,
+                exclude: /node_modules/,
+                loader: "twig-loader?exportAsEs6Default"
+            },
         ],
     },
     plugins: [
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
-        ...html('./ui/**/*.twig'),
+        new HtmlWebpackPlugin({
+            template: PATHS.root + '/ui/index.html'
+        }),
         Autoprefixer,
         new ExtractTextPlugin({
             filename: 'app.[hash].css',

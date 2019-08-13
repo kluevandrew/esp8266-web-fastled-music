@@ -28,6 +28,21 @@ protected:
     T getOption(const String &key, T defaultValue) {
         return Application::getInstance().getSettingsStorage().get<T>(key, defaultValue);
     }
+
+    FORCE_INLINE int getHueOption(const String &key, int defaultValue) {
+        return min(360, max(0, getOption<int>(key, defaultValue)));
+    }
+
+    FORCE_INLINE uint8_t getLimitedByteOption(const String &key, int defaultValue, uint8_t min = 0, uint8_t max = 255) {
+        uint8_t value = getOption(key, defaultValue);
+        if (value < min) {
+            return min;
+        }
+        if (value > max) {
+            return max;
+        }
+        return value;
+    }
 };
 
 

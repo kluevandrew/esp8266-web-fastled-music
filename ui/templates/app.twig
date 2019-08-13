@@ -1,0 +1,21 @@
+<h1>App</h1>
+
+<select name="" id="" data-set-animation>
+    {% for animationName, animationOptions in ANIMATIONS %}
+        <option value="{{ animationName }}">{{ animationName }}</option>
+    {% endfor %}
+</select>
+
+
+{% for animationName, animationParams in ANIMATIONS %}
+    <div>
+        <h1>{{ animationName }}</h1>
+        <div>
+            {% for paramName, param in animationParams %}
+                {% if param.type == "slider" %}
+                    {% include './_slider.twig' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

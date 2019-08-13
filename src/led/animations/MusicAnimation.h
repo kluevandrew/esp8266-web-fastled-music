@@ -49,7 +49,7 @@ protected:
     }
 
     uint8_t getHighSaturation() {
-        return getOption((getName() + ".highColor.saturation").c_str(), 255);
+        return getOption((getName() + ".highColor.sat").c_str(), 255);
     }
 
     uint8_t getMidColor() {
@@ -57,7 +57,7 @@ protected:
     }
 
     uint8_t getMidSaturation() {
-        return getOption((getName() + ".midColor.saturation").c_str(), 255);
+        return getOption((getName() + ".midColor.sat").c_str(), 255);
     }
 
     uint8_t getLowColor() {
@@ -65,7 +65,7 @@ protected:
     }
 
     uint8_t getLowSaturation() {
-        return getOption((getName() + ".lowColor.saturation").c_str(), 255);
+        return getOption((getName() + ".lowColor.sat").c_str(), 255);
     }
 
     uint8_t getEmptyColor() {
@@ -73,7 +73,7 @@ protected:
     }
 
     uint8_t getEmptySaturation() {
-        return getOption((getName() + ".emptyColor.saturation").c_str(), 255);
+        return getOption((getName() + ".emptyColor.sat").c_str(), 255);
     }
 
     uint8_t getMinimalBright() {

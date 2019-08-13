@@ -40,7 +40,6 @@ public:
 private:
     int hue = 50;
     uint8_t sat = 100;
-    uint8_t bright = 255;
     int diff = 256;
     unsigned long timer = 0;
     uint8_t inc = 1;

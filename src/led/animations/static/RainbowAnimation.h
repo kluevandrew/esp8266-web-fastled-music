@@ -34,8 +34,8 @@ public:
 
 private:
     unsigned long timer = 0;
-    double steps = 0.0;
-    int color = 0;
+    unsigned int steps = 0.0;
+    unsigned int color = 0;
 };
 
 

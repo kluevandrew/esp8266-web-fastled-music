@@ -19,7 +19,8 @@
 #include "BlurAnimation.h"
 
 void BlurAnimation::animate(CRGB *strip) {
-    uint8_t bpm = getOption("BlurAnimation.bpm", 3);
+    uint8_t bpm = getLimitedByteOption("BlurAnimation.bpm", 3, 1);
+    uint8_t bright = getLimitedByteOption("BlurAnimation.bright", 255);
 
     uint8_t blurAmount = dim8_raw(beatsin8(bpm, 64, 192));       // A sinewave at 3 Hz with values ranging from 64 to 192.
     blur1d(strip, LED_LENGTH, blurAmount);                        // Apply some blurring to whatever's already on the strip, which will eventually go black.
@@ -30,10 +31,10 @@ void BlurAnimation::animate(CRGB *strip) {
 
     // The color of each point shifts over time, each at a different speed.
     uint16_t ms = millis();
-    strip[(i + j) / 2] = CHSV(ms / 29, 200, 255);
-    strip[(j + k) / 2] = CHSV(ms / 41, 200, 255);
-    strip[(k + i) / 2] = CHSV(ms / 73, 200, 255);
-    strip[(k + i + j) / 3] = CHSV(ms / 53, 200, 255);
+    strip[(i + j) / 2] = CHSV(ms / 29, 200, bright);
+    strip[(j + k) / 2] = CHSV(ms / 41, 200, bright);
+    strip[(k + i) / 2] = CHSV(ms / 73, 200, bright);
+    strip[(k + i + j) / 3] = CHSV(ms / 53, 200, bright);
 
     FastLED.show();
 }
