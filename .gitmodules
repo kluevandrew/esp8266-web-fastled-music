@@ -1,0 +1,18 @@
+[submodule "lib/arduinoFFT"]
+	path = lib/arduinoFFT
+	url = https://github.com/kosme/arduinoFFT.git
+[submodule "lib/ArduinoJson"]
+	path = lib/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson.git
+[submodule "lib/ESPAsyncTCP"]
+	path = lib/ESPAsyncTCP
+	url = https://github.com/me-no-dev/ESPAsyncTCP.git
+[submodule "lib/ESPAsyncWebServer"]
+	path = lib/ESPAsyncWebServer
+	url = https://github.com/me-no-dev/ESPAsyncWebServer.git
+[submodule "lib/FastLED"]
+	path = lib/FastLED
+	url = https://github.com/FastLED/FastLED.git
+[submodule "lib/MCP3208"]
+	path = lib/MCP3208
+	url = https://github.com/zettrik/MCP3208.git
