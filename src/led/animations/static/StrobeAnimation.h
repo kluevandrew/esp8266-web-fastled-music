@@ -33,7 +33,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "StrobeAnimation";
+        return "Strobe";
     };
 private:
     unsigned long nextTickAt = 0;

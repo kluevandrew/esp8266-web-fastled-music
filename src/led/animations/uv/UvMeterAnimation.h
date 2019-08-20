@@ -34,7 +34,7 @@ public:
     void animate(CRGB *strip) override;
 
     String getName() override {
-        return "UvMeterAnimation";
+        return "UvMeter";
     };
 
 private:

@@ -26,7 +26,8 @@ class ConfigurableLedAnimation : public LedAnimation {
 protected:
     template<typename T>
     T getOption(const String &key, T defaultValue) {
-        return Application::getInstance().getSettingsStorage().get<T>(key, defaultValue);
+        String namedKey = getName() + "." + key;
+        return Application::getInstance().getSettingsStorage().get<T>(namedKey, defaultValue);
     }
 
     FORCE_INLINE int getHueOption(const String &key, int defaultValue) {

@@ -21,13 +21,13 @@
 void StrobeAnimation::animate() {
     if (nextTickAt <= millis()) {
         if (way) {
-            uint8_t hueOn = getLimitedByteOption("StrobeAnimation.colorOn.hue", 0);
-            uint8_t satOn = getLimitedByteOption("StrobeAnimation.colorOn.sat", 0);
-            uint8_t brightOn = getLimitedByteOption("StrobeAnimation.colorOn.bright", 255);
+            uint8_t hueOn = getLimitedByteOption("colorOn.hue", 0);
+            uint8_t satOn = getLimitedByteOption("colorOn.sat", 0);
+            uint8_t brightOn = getLimitedByteOption("colorOn.bright", 255);
 
-            unsigned int timeOn = getOption("StrobeAnimation.timeOn", 200);
-            uint8_t stepOn = getLimitedByteOption("StrobeAnimation.stepOn", 50);
-            uint8_t delayOn = getLimitedByteOption("StrobeAnimation.delayOn", 10);
+            unsigned int timeOn = getOption("timeOn", 200);
+            uint8_t stepOn = getLimitedByteOption("stepOn", 50);
+            uint8_t delayOn = getLimitedByteOption("delayOn", 10);
 
             currentBright = currentBright + stepOn;
 
@@ -41,7 +41,7 @@ void StrobeAnimation::animate() {
 
             FastLED.showColor(CHSV(hueOn, satOn, currentBright));
         } else {
-            unsigned int timeOff = getOption("StrobeAnimation.timeOff", 100);
+            unsigned int timeOff = getOption("timeOff", 100);
             FastLED.showColor(CRGB::Black);
             nextTickAt = millis() + timeOff;
             currentBright = 0;

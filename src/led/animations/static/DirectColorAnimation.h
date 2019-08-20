@@ -32,7 +32,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "DirectColorAnimation";
+        return "DirectColor";
     };
 
 private:

@@ -32,7 +32,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "SpectrumAnalyzerFrequencyAnimation";
+        return "SpectrumAnalyzerFrequency";
     };
 
 private:

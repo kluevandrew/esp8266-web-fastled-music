@@ -21,9 +21,9 @@
 
 void SimpleFrequencyAnimation::animate() {
     auto led = Application::getInstance().getLed();
-    calculateBright("SimpleFrequencyAnimation");
+    calculateBright();
 
-    uint8_t direction = getOption("SimpleFrequencyAnimation.direction", 0);
+    uint8_t direction = getOption("direction", 0);
     if (direction == 1) {
         for (int i = 0; i < LED_LENGTH; i++) {
             if (i < LED_LENGTH / 3) {

@@ -35,7 +35,7 @@ public:
     void animate(CRGB *strip) override;
 
     String getName() override {
-        return "BlurAnimation";
+        return "Blur";
     };
 };
 

@@ -20,12 +20,12 @@
 #include <Application.h>
 
 void SpectrumAnalyzerFrequencyAnimation::animate() {
-    uint8_t startColor = getLimitedByteOption("SpectrumAnalyzerFrequencyAnimation.startColor", 0, 255);
-    uint8_t step = getLimitedByteOption("SpectrumAnalyzerFrequencyAnimation.step", 5, 1);
-    uint8_t smooth = getLimitedByteOption("SpectrumAnalyzerFrequencyAnimation.smooth", 2, 1);
+    uint8_t startColor = getLimitedByteOption("startColor", 0, 255);
+    uint8_t step = getLimitedByteOption("step", 5, 1);
+    uint8_t smooth = getLimitedByteOption("smooth", 2, 1);
 
     auto led = Application::getInstance().getLed();
-    calculateBright("SpectrumAnalyzer");
+    calculateBright();
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
 
     auto vReal = audioAnalyzer->getVReal();

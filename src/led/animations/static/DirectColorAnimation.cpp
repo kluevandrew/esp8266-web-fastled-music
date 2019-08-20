@@ -39,16 +39,16 @@
                                     }
 
 void DirectColorAnimation::animate() {
-    unsigned long delay = max(10, getOption("DirectColorAnimation.delay", DEFAULT_DELAY));
+    unsigned long delay = max(10, getOption("delay", DEFAULT_DELAY));
     if (millis() - timer <= delay) {
         return;
     }
     timer = millis();
 
-    unsigned int color = getHueOption("DirectColorAnimation.color.hue", DEFAULT_HUE);
-    uint8_t bright = getOption("DirectColorAnimation.color.bright", DEFAULT_BRIGHT);
-    uint8_t saturation = getOption("DirectColorAnimation.color.sat", DEFAULT_SATURATION);
-    uint8_t step = max(1, getOption<int>("DirectColorAnimation.step", DEFAULT_STEP));
+    unsigned int color = getHueOption("color.hue", DEFAULT_HUE);
+    uint8_t bright = getOption("color.bright", DEFAULT_BRIGHT);
+    uint8_t saturation = getOption("color.sat", DEFAULT_SATURATION);
+    uint8_t step = max(1, getOption<int>("step", DEFAULT_STEP));
 
     if (currentColor != color || currentSaturation != saturation || currentBright != bright) {
         DO_STEP(currentColor, color);

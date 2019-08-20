@@ -29,7 +29,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "NoopAnimation";
+        return "Noop";
     };
 };
 

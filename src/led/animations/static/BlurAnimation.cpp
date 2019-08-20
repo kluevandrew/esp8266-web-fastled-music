@@ -19,9 +19,9 @@
 #include "BlurAnimation.h"
 
 void BlurAnimation::animate(CRGB *strip) {
-    uint8_t bpm = getLimitedByteOption("BlurAnimation.bpm", 3, 1);
-    uint8_t bright = getLimitedByteOption("BlurAnimation.bright", 255);
-    uint8_t sat = getLimitedByteOption("BlurAnimation.sat", 200);
+    uint8_t bpm = getLimitedByteOption("bpm", 3, 1);
+    uint8_t bright = getLimitedByteOption("bright", 255);
+    uint8_t sat = getLimitedByteOption("sat", 200);
 
     uint8_t blurAmount = dim8_raw(beatsin8(bpm, 64, 192));       // A sinewave at 3 Hz with values ranging from 64 to 192.
     blur1d(strip, LED_LENGTH, blurAmount);                        // Apply some blurring to whatever's already on the strip, which will eventually go black.

@@ -32,7 +32,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "DynamicColorAnimation";
+        return "DynamicColor";
     };
 private:
     unsigned int color = 0;

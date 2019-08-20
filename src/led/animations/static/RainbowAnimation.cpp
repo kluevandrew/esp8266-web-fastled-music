@@ -21,11 +21,11 @@
 
 void RainbowAnimation::animate() {
 
-    unsigned int step = max(getOption<int>("RainbowAnimation.step", 1), 1);
-    unsigned int period = max(getOption<int>("RainbowAnimation.period", 1), 1);
-    unsigned int delay = max(getOption<int>("RainbowAnimation.delay", 30), 1);
-    uint8_t saturation = getLimitedByteOption("RainbowAnimation.color.sat", 255);
-    uint8_t bright = getLimitedByteOption("RainbowAnimation.color.bright", 128);
+    unsigned int step = max(getOption<int>("step", 1), 1);
+    unsigned int period = max(getOption<int>("period", 1), 1);
+    unsigned int delay = max(getOption<int>("delay", 30), 1);
+    uint8_t saturation = getLimitedByteOption("color.sat", 255);
+    uint8_t bright = getLimitedByteOption("color.bright", 128);
 
     auto led = Application::getInstance().getLed();
 

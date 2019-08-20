@@ -25,12 +25,12 @@
 #define DEFAULT_DELAY 100
 
 void DynamicColorAnimation::animate() {
-    unsigned long delay = getOption("DynamicColorAnimation.delay", DEFAULT_DELAY);
+    unsigned long delay = getOption("delay", DEFAULT_DELAY);
 
     if (millis() - timer > delay) {
         timer = millis();
-        uint8_t saturation = getOption("DynamicColorAnimation.color.sat", DEFAULT_SATURATION);
-        uint8_t bright = getOption("DynamicColorAnimation.color.bright", DEFAULT_BRIGHT);
+        uint8_t saturation = getOption("color.sat", DEFAULT_SATURATION);
+        uint8_t bright = getOption("color.bright", DEFAULT_BRIGHT);
         if (++color > 360) {
             color = 0;
         }

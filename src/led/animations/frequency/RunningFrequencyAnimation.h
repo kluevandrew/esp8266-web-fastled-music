@@ -32,7 +32,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "RunningFrequencyAnimation";
+        return "RunningFrequency";
     };
 
 private:

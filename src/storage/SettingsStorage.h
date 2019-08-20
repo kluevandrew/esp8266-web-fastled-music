@@ -46,13 +46,10 @@ public:
     template<typename T>
     FORCE_INLINE T get(const String &key, T defaultValue) const {
         if (!has(key)) {
+            set(key, defaultValue);
             return defaultValue;
         }
         return (*jsonDocument)[key];
-    }
-
-    FORCE_INLINE JsonVariant get(const String &key, JsonVariant defaultValue) {
-        return jsonDocument->getMember(key);
     }
 
     FORCE_INLINE JsonVariant get(const String &key) {

@@ -19,8 +19,8 @@
 #include "FrequencyStrobeAnimation.h"
 
 void FrequencyStrobeAnimation::animate() {
-    calculateBright("FrequencyStrobeAnimation");
-    uint8_t mode = getOption("FrequencyStrobeAnimation.mode", 0);
+    calculateBright();
+    uint8_t mode = getOption("mode", 0);
 
     switch (mode) {
         case 1:

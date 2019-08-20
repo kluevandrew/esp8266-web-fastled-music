@@ -20,11 +20,11 @@
 #include <Application.h>
 
 void RunningFrequencyAnimation::animate() {
-    uint8_t mode = getOption("RunningFrequencyAnimation.mode", 0);
-    unsigned long delay = getOption("RunningFrequencyAnimation.delay", 11);
+    uint8_t mode = getOption("mode", 0);
+    unsigned long delay = getOption("delay", 11);
 
     auto led = Application::getInstance().getLed();
-    calculateBright("RunningFrequencyAnimation");
+    calculateBright();
 
     led->setColorAt(LED_LENGTH / 2, CHSV(getEmptyColor(), getEmptySaturation(), getMidSaturation()));
     uint8_t countOfVariants = 0;

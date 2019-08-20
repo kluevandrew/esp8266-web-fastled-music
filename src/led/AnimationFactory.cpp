@@ -36,19 +36,19 @@
 #define ANIMATION(ANIMATION_NAME, CONSTRUCTOR) if (strcmp(ANIMATION_NAME, name) == 0) { return new CONSTRUCTOR(); }
 
 LedAnimation *AnimationFactory::create(const char *name) {
-    ANIMATION("StrobeAnimation", StrobeAnimation)
-    ANIMATION("SimpleFrequencyAnimation", SimpleFrequencyAnimation);
-    ANIMATION("FrequencyStrobeAnimation", FrequencyStrobeAnimation);
-    ANIMATION("RunningFrequencyAnimation", RunningFrequencyAnimation);
-    ANIMATION("SpectrumAnalyzerFrequencyAnimation", SpectrumAnalyzerFrequencyAnimation);
-    ANIMATION("RainbowAnimation", RainbowAnimation);
-    ANIMATION("DirectColorAnimation", DirectColorAnimation);
-    ANIMATION("DynamicColorAnimation", DynamicColorAnimation);
-    ANIMATION("DotBeatAnimation", DotBeatAnimation);
-    ANIMATION("BlendwaveAnimation", BlendwaveAnimation);
-    ANIMATION("BlurAnimation", BlurAnimation);
-    ANIMATION("ConfettiAnimation", ConfettiAnimation);
-    ANIMATION("UvMeterAnimation", UvMeterAnimation);
+    ANIMATION("Strobe", StrobeAnimation)
+    ANIMATION("SimpleFrequency", SimpleFrequencyAnimation);
+    ANIMATION("FrequencyStrobe", FrequencyStrobeAnimation);
+    ANIMATION("RunningFrequency", RunningFrequencyAnimation);
+    ANIMATION("SpectrumAnalyzerFrequency", SpectrumAnalyzerFrequencyAnimation);
+    ANIMATION("Rainbow", RainbowAnimation);
+    ANIMATION("DirectColor", DirectColorAnimation);
+    ANIMATION("DynamicColor", DynamicColorAnimation);
+    ANIMATION("DotBeat", DotBeatAnimation);
+    ANIMATION("Blendwave", BlendwaveAnimation);
+    ANIMATION("Blur", BlurAnimation);
+    ANIMATION("Confetti", ConfettiAnimation);
+    ANIMATION("UvMeter", UvMeterAnimation);
 
     return new NoopAnimation();
 }

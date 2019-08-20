@@ -53,6 +53,10 @@ public:
         return WiFi.getMode() == WIFI_AP;
     }
 
+    static String ip() {
+        return isInApMode() ? WiFi.softAPIP().toString() : WiFi.localIP().toString();
+    }
+
 private:
     static void connectSTA();
 

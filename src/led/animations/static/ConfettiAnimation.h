@@ -38,7 +38,7 @@ public:
     void animate(CRGB *strip) override;
 
     String getName() override {
-        return "ConfettiAnimation";
+        return "Confetti";
     };
 
 private:

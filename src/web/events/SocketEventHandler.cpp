@@ -25,13 +25,18 @@
                                response.payload["error"] = REASON;
 
 void SocketEventHandler::handle(const String &msg, AsyncWebSocketClient *client) {
-    DynamicJsonDocument message(4096);
+    DynamicJsonDocument message(1024);
     deserializeJson(message, msg);
     unsigned long long id = message["id"];
     String event = message["event"];
     JsonVariant payload = message["payload"];
 
-    DynamicJsonDocument responseDocument(4096);
+    int capacity = 1024;
+    if (event == "getOptions") {
+        capacity += SETTINGS_CAPACITY;
+    }
+
+    DynamicJsonDocument responseDocument(capacity);
     auto responsePayload = responseDocument.createNestedObject("payload");
     Response response = Response(responsePayload);
 
@@ -41,6 +46,7 @@ void SocketEventHandler::handle(const String &msg, AsyncWebSocketClient *client)
     else HANDLER("saveOptions", handleSaveOptionsEvent)
     else HANDLER("resetOptions", handleResetOptionsEvent)
     else HANDLER("getOptions", handleGetOptionsEvent)
+    else HANDLER("getWifiInfo", handleGetWifiInfoEvent)
     else {
         ERROR_RESPONSE("No such action")
     }
@@ -134,7 +140,31 @@ void SocketEventHandler::handleGetOptionsEvent(JsonVariant &payload, SocketEvent
 
     response.payload["currentAnimation"] = led->getAnimation()->getName();
     response.payload["DirectColorAnimation.color.bright"] =  settings.get("DirectColorAnimation.color.bright");
-//    response.payload["options"] = settings.getJsonDocument();
     auto options = response.payload.createNestedObject("options");
     options.set(settings.getJsonDocument()->as<JsonObject>());
+}
+
+void SocketEventHandler::handleGetWifiInfoEvent(JsonVariant &payload, SocketEventHandler::Response &response) {
+    WiFiManager::ScanResult scan = WiFiManager::scan();
+
+    if (scan.running) {
+        response.payload["running"] = true;
+    } else {
+        response.payload["count"] = scan.count;
+        JsonArray networks = response.payload.createNestedArray("networks");
+        if (scan.count > 0) {
+            for (WiFiManager::Network &network : scan.networks) {
+                JsonObject jsonObject = networks.createNestedObject();
+                jsonObject["ssid"] = network.ssid;
+                jsonObject["rssi"] = network.rssi;
+                jsonObject["bssid"] = network.bssid;
+                jsonObject["encryption"] = network.encryption;
+                jsonObject["channel"] = network.channel;
+                jsonObject["isHidden"] = network.isHidden;
+            }
+        }
+    }
+
+    response.payload["ap"] = WiFiManager::isInApMode();
+    response.payload["ip"] = WiFiManager::ip();
 }

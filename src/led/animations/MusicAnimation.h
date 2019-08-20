@@ -38,6 +38,10 @@ protected:
     double averageLevels[3] = {0.0, 0.0, 0.0};
     double levels[3] = {0.0, 0.0, 0.0};
 
+    void calculateBright() {
+        calculateBright(getName());
+    };
+
     void calculateBright(const String &animationName);
 
     uint8_t getHighColor() {

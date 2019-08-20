@@ -33,7 +33,7 @@ public:
     void animate() override;
 
     String getName() override {
-        return "RainbowAnimation";
+        return "Rainbow";
     };
 private:
     unsigned long timer = 0;

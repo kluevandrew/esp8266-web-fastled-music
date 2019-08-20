@@ -48,6 +48,8 @@ protected:
     static void handleResetOptionsEvent(JsonVariant &payload, Response &response);
 
     static void handleGetOptionsEvent(JsonVariant &payload, Response &response);
+
+    static void handleGetWifiInfoEvent(JsonVariant &payload, Response &response);
 };
 
 
