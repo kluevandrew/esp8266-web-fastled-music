@@ -3,7 +3,8 @@ import { Renderer } from "./renderer";
 import { Ui } from "./ui";
 
 (function main() {
-  const HOST = document.location.hostname === 'localhost' ? '192.168.1.58' : document.location.hostname;
+  // const HOST = document.location.hostname === 'localhost' ? '192.168.1.58' : document.location.hostname;
+  const HOST = document.location.hostname === 'localhost' ? '192.168.252.245' : document.location.hostname;
   const api = new Api(HOST);
 
   const renderer = new Renderer();

@@ -63,7 +63,7 @@ export class Ui {
         let digits = parseInt(slider.dataset.float, 10);
         if (slider.dataset.float) {
           min = this.roundTo(parseFloat(slider.dataset.min), digits);
-          max =  this.roundTo(parseFloat(slider.dataset.max), digits);
+          max = this.roundTo(parseFloat(slider.dataset.max), digits);
         } else {
           min = parseInt(slider.dataset.min, 10);
           max = parseInt(slider.dataset.max, 10);
@@ -172,14 +172,22 @@ export class Ui {
   }
 
   private loadAdditionOptions(type: string) {
+    let container = document.querySelector('[data-additional-options-content]');
+    container.innerHTML = '';
     switch (type) {
-       case 'wifi': this.loadWiFiOptions();
+      case 'wifi':
+        this.loadWiFiOptions().then((response) => {
+            container.append(
+              this.bind(
+                this.renderer.render('options/wifi.html', response),
+              )
+            )
+          }
+        );
     }
   }
 
   private loadWiFiOptions() {
-    this.api.getWifiNetworks().then((response) => {
-      console.log(response);
-    })
+    return this.api.getWifiInfo();
   }
 }

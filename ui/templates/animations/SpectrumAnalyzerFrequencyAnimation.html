@@ -1,6 +1,0 @@
-<div class="form">
-    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Стартовый цвет", key: "SpectrumAnalyzerFrequencyAnimation.startColor", min: 0, max: 255}) %}</div>
-    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Шаг", key: "SpectrumAnalyzerFrequencyAnimation.step", min: 1, max: 100}) %}</div>
-    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Сглаживание", key: "SpectrumAnalyzerFrequencyAnimation.smooth", min: 1, max: 100}) %}</div>
-    {% engine.include("inputs/audio.html", {prefix: context.animation, hideColors: true}) %}
-</div>

@@ -74,7 +74,7 @@ export class Api {
     return this.currentAnimation;
   }
 
-  public getWifiNetworks() {
-    return this.send("getWifiNetworks", {});
+  public getWifiInfo() {
+    return this.send("getWifiInfo", {});
   }
 }

@@ -1,37 +1,39 @@
-import blendwave from './animations/BlendwaveAnimation.html';
-import blur from './animations/BlurAnimation.html';
-import confetti from './animations/ConfettiAnimation.html';
-import direct from './animations/DirectColorAnimation.html';
-import dot_beat from './animations/DotBeatAnimation.html';
-import dynamic from './animations/DynamicColorAnimation.html';
-import frequency from './animations/SimpleFrequencyAnimation.html';
-import frequency_running from './animations/RunningFrequencyAnimation.html';
-import frequency_strobe from './animations/FrequencyStrobeAnimation.html';
-import rainbow from './animations/RainbowAnimation.html';
-import spectrum from './animations/SpectrumAnalyzerFrequencyAnimation.html';
-import strobe from './animations/StrobeAnimation.html';
-import uv from './animations/UvMeterAnimation.html';
+import blendwave from './animations/Blendwave.html';
+import blur from './animations/Blur.html';
+import confetti from './animations/Confetti.html';
+import direct from './animations/DirectColor.html';
+import dot_beat from './animations/DotBeat.html';
+import dynamic from './animations/DynamicColor.html';
+import frequency from './animations/SimpleFrequency.html';
+import frequency_running from './animations/RunningFrequency.html';
+import frequency_strobe from './animations/FrequencyStrobe.html';
+import rainbow from './animations/Rainbow.html';
+import spectrum from './animations/SpectrumAnalyzerFrequency.html';
+import strobe from './animations/Strobe.html';
+import uv from './animations/UvMeter.html';
 import slider from './inputs/slider.html';
 import color from './inputs/color.html';
 import audio from './inputs/audio.html';
+import wifi from './options/wifi.html';
 import app from './app.html';
 
 export const TemplatesList = {
-  'animations/BlendwaveAnimation.html': blendwave,
-  'animations/BlurAnimation.html': blur,
-  'animations/ConfettiAnimation.html': confetti,
-  'animations/DirectColorAnimation.html': direct,
-  'animations/DotBeatAnimation.html': dot_beat,
-  'animations/DynamicColorAnimation.html': dynamic,
-  'animations/SimpleFrequencyAnimation.html': frequency,
-  'animations/RunningFrequencyAnimation.html': frequency_running,
-  'animations/FrequencyStrobeAnimation.html': frequency_strobe,
-  'animations/RainbowAnimation.html': rainbow,
-  'animations/SpectrumAnalyzerFrequencyAnimation.html': spectrum,
-  'animations/StrobeAnimation.html': strobe,
-  'animations/UvMeterAnimation.html': uv,
+  'animations/Blendwave.html': blendwave,
+  'animations/Blur.html': blur,
+  'animations/Confetti.html': confetti,
+  'animations/DirectColor.html': direct,
+  'animations/DotBeat.html': dot_beat,
+  'animations/DynamicColor.html': dynamic,
+  'animations/SimpleFrequency.html': frequency,
+  'animations/RunningFrequency.html': frequency_running,
+  'animations/FrequencyStrobe.html': frequency_strobe,
+  'animations/Rainbow.html': rainbow,
+  'animations/SpectrumAnalyzerFrequency.html': spectrum,
+  'animations/Strobe.html': strobe,
+  'animations/UvMeter.html': uv,
   'inputs/slider.html': slider,
   'inputs/color.html': color,
   'inputs/audio.html': audio,
+  'options/wifi.html': wifi,
   'app.html': app,
 };

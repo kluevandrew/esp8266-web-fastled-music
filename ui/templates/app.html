@@ -7,9 +7,9 @@
     <div class="animation-selector">
         <label for="animation">Анимация</label>
         <select name="animation-selector" id="animation" data-animation-selector>
-            #foreach (context.ANIMATIONS as animation)
+            #foreach anim (context.ANIMATIONS as animation)
                 <option value="{{ animation.key }}">{{ animation.name }}</option>
-            #endforeach
+            #endanim
         </select>
     </div>
     <div data-animation-settings></div>
@@ -24,5 +24,6 @@
         <button class="btn btn--default" data-toggle-addition-options="wifi">WiFi</button>
         <button class="btn btn--default" data-toggle-addition-options="adc">ADC</button>
         <button class="btn btn--default" data-toggle-addition-options="debug">DEBUG</button>
+        <div data-additional-options-content></div>
     </div>
 </div>

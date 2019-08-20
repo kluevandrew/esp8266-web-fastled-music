@@ -1,64 +1,57 @@
 export const ANIMATIONS = {
   // static
-  DirectColorAnimation: {
-    key: "DirectColorAnimation",
+  DirectColor: {
+    key: "DirectColor",
     name: "Статичный цвет",
   },
-  DynamicColorAnimation: {
-    key: "DynamicColorAnimation",
+  DynamicColor: {
+    key: "DynamicColor",
     name: "Динамический цвет"
   },
-  RainbowAnimation: {
-    key: "RainbowAnimation",
+  Rainbow: {
+    key: "Rainbow",
     name: "Радуга"
   },
-  StrobeAnimation: {
-    key: "StrobeAnimation",
+  Strobe: {
+    key: "Strobe",
     name: "Стробосокоп",
   },
-  DotBeatAnimation: {
-    key: "DotBeatAnimation",
+  DotBeat: {
+    key: "DotBeat",
     name: "Точечный ритм",
   },
-  BlendwaveAnimation: {
-    key: "BlendwaveAnimation",
+  Blendwave: {
+    key: "Blendwave",
     name: "Смешанная волна",
   },
-  BlurAnimation: {
-    key: "BlurAnimation",
+  Blur: {
+    key: "Blur",
     name: "Пятна",
-    options: {
-      "BlurAnimation.bpm": {type: "slider", options: {min: 1, max: 255}},
-      "BlurAnimation.bright": {type: "slider", options: {min: 0, max: 255}},
-    },
   },
-  ConfettiAnimation: {
-    key: "ConfettiAnimation",
+  Confetti: {
+    key: "Confetti",
     name: "Конфетти",
-    options: {
-      "ConfettiAnimation.bright": {type: "slider", options: {min: 0, max: 255}},
-    },
   },
   // frequency
-  SimpleFrequencyAnimation: {
-    key: "SimpleFrequencyAnimation",
+  SimpleFrequency: {
+    key: "SimpleFrequency",
     name: "Частоты",
   },
-  FrequencyStrobeAnimation: {
-    key: "FrequencyStrobeAnimation",
+  FrequencyStrobe: {
+    key: "FrequencyStrobe",
     name: "Частотный стробосокоп",
   },
-  RunningFrequencyAnimation: {
-    key: "RunningFrequencyAnimation",
+  RunningFrequency: {
+    key: "RunningFrequency",
     name: "Бегущие частоты",
   },
-  SpectrumAnalyzerFrequencyAnimation: {
-    key: "SpectrumAnalyzerFrequencyAnimation",
+  SpectrumAnalyzerFrequency: {
+    key: "SpectrumAnalyzerFrequency",
     name: "Анализатор спектра",
   },
   // uv
-  // UvMeterAnimation: {
-  //   key: "UvMeterAnimation",
+  // UvMeter: {
+  //   key: "UvMeter",
   //   name: "UV-измеритель",
   // },
 };

@@ -1,8 +1,8 @@
-#if (!context.hideColors)
+#if hideColors (!context.hideColors)
 <div class="form__row">{% engine.include("inputs/color.html", {label: "Цвет высоких частот", key: context.prefix + ".highColor"}) %}</div>
 <div class="form__row">{% engine.include("inputs/color.html", {label: "Цвет средних частот", key: context.prefix + ".midColor"}) %}</div>
 <div class="form__row">{% engine.include("inputs/color.html", {label: "Цвет низких частот", key: context.prefix + ".lowColor"}) %}</div>
-#endif
+#endhideColors
 <div class="form__row">{% engine.include("inputs/slider.html", {label: "Максимальная яркость", key: context.prefix + ".maxBright", min: 0, max: 255}) %}</div>
 <div class="form__row">{% engine.include("inputs/slider.html", {label: "Минимальная яркость", key: context.prefix + ".minimalBright", min: 0, max: 255}) %}</div>
 <div class="form__row">{% engine.include("inputs/slider.html", {label: "micLowPass", key: context.prefix + ".micLowPass", min: 1, max: 4095}) %}</div>

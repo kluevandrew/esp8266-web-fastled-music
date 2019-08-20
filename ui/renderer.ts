@@ -23,26 +23,34 @@ export class Renderer {
 
   private compileTemplate(template: string, context: any = {}) {
     return template
-      .replace(/#if\s*?\((.+?)\)((.|\n)*)#endif/igm, (match: string, ifClause: string, inner: string) => {
-        return this.evalTemplateCode(ifClause.trim(), context) ? inner : '';
+      .replace(/#if\s+(?<label>[a-zA-Z]+?)\s*\((?<if>.+?)\)(?<code>(?:.|\n)*)#end\k<label>(?=\s+$)/igm, (match: string, ...groups:any[]) => {
+        let named = groups[5];
+        return this.evalTemplateCode(named.if.trim(), context) ? this.compileTemplate(named.code, context) : '';
       })
-      .replace(/#foreach\s*\((.+?)\s*?as\s*(.+?)(\s*,\s*(.*?))?\)((.|\n)*)#endforeach/igm, (match: string, arrayCode: string, itemName: string, _: string, keyName: string, inner: string, b) => {
-        const iterator = this.evalTemplateCode(arrayCode.trim(), context);
+      .replace(
+        /#foreach\s+(?<label>[a-zA-Z]+?)\s*\((?<array>.+?)\s+as\s+(?<item>[a-zA-Z][a-zA-Z0-9_]*)(?:\s*,\s*(?<key>[a-zA-Z][a-zA-Z0-9_]*))?\)(?<code>(?:.|\n)*)#end\k<label>/igm,
+        (match: string, ...groups:any[]) => {
+          let named = groups[7];
+
+        const iterator = this.evalTemplateCode(named.array.trim(), context);
+        if (!iterator) {
+          return '';
+        }
         let value = '';
         for (let key in iterator) {
           if (!iterator.hasOwnProperty(key)) {
             continue;
           }
-          context[itemName.trim()] = iterator[key];
-          if (keyName) {
-            context[keyName.trim()] = key;
+          context[named.item.trim()] = iterator[key];
+          if (named.key) {
+            context[named.key.trim()] = key;
           }
-          value += this.compileTemplate(inner, context);
+          value += this.compileTemplate(named.code, context);
         }
 
-        context[itemName] = undefined;
-        if (keyName) {
-          context[keyName.trim()] = undefined;
+        context[named.item] = undefined;
+        if (named.key) {
+          context[named.key.trim()] = undefined;
         }
         return value;
       })
