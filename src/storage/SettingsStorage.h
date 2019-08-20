@@ -69,6 +69,8 @@ public:
 
     void truncate();
 
+    DynamicJsonDocument *getJsonDocument() const;
+
 private:
     DynamicJsonDocument *jsonDocument = new DynamicJsonDocument(SETTINGS_CAPACITY);
 

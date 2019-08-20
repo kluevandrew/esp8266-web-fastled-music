@@ -31,6 +31,9 @@ public:
 
     void animate() override;
 
+    String getName() override {
+        return "DynamicColorAnimation";
+    };
 private:
     unsigned int color = 0;
     unsigned long timer = 0;

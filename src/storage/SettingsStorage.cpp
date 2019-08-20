@@ -31,7 +31,7 @@ void SettingsStorage::load() {
         return;
     }
     size_t size = configFile.size();
-    if (size > 1024) {
+    if (size > SETTINGS_CAPACITY) {
         Serial.println("Config file size is too large");
         configFile.close();
         return;
@@ -64,5 +64,9 @@ void SettingsStorage::truncate() {
     delete(jsonDocument);
     jsonDocument = new DynamicJsonDocument(SETTINGS_CAPACITY);
     save();
+}
+
+DynamicJsonDocument *SettingsStorage::getJsonDocument() const {
+    return jsonDocument;
 }
 

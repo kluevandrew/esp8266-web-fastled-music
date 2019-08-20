@@ -33,7 +33,6 @@ public:
 
     void animate(CRGB *strip) override;
 
-protected:
     String getName() override {
         return "UvMeterAnimation";
     };

@@ -28,8 +28,6 @@ class MusicAnimation : public ConfigurableLedAnimation {
 public:
     MusicAnimation() = default;
 
-    explicit MusicAnimation(const JsonObject &options);
-
     ~MusicAnimation() override = default;
 
 protected:
@@ -41,8 +39,6 @@ protected:
     double levels[3] = {0.0, 0.0, 0.0};
 
     void calculateBright(const String &animationName);
-
-    virtual String getName() = 0;
 
     uint8_t getHighColor() {
         return getOption((getName() + ".highColor.hue").c_str(), (int) HUE_BLUE);
@@ -78,6 +74,11 @@ protected:
 
     uint8_t getMinimalBright() {
         return getOption((getName() + ".minimalBright").c_str(), 255);
+    }
+
+    uint8_t mapBright(uint8_t val) {
+        uint8_t max = getOption((getName() + ".maxBright").c_str(), 255);
+        return map(val, 0, 255, 0, max);
     }
 };
 

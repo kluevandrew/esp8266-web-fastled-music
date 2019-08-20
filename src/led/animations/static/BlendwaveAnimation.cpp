@@ -19,19 +19,21 @@
 #include "BlendwaveAnimation.h"
 
 void BlendwaveAnimation::animate(CRGB *strip) {
-    uint8_t bpm1 = getOption("BlendwaveAnimation.bpm1", 6);
-    uint8_t bpm2 = getOption("BlendwaveAnimation.bpm2", 10);
+    uint8_t bpm1 = getLimitedByteOption("BlendwaveAnimation.bpm1", 6, 1);
+    uint8_t bpm2 = getLimitedByteOption("BlendwaveAnimation.bpm2", 10, 1);
+    uint8_t bright = getLimitedByteOption("BlendwaveAnimation.bright", 6);
+    uint8_t sat = getLimitedByteOption("BlendwaveAnimation.sat", 6);
 
     uint8_t speed = beatsin8(bpm1, 0, 255);
 
     color1 = blend(
-            CHSV(beatsin8(3, 0, 255), 255, 255),
-            CHSV(beatsin8(4, 0, 255), 255, 255),
+            CHSV(beatsin8(3, 0, 255), sat, bright),
+            CHSV(beatsin8(4, 0, 255), sat, bright),
             speed
     );
     color2 = blend(
-            CHSV(beatsin8(4, 0, 255), 255, 255),
-            CHSV(beatsin8(3, 0, 255), 255, 255),
+            CHSV(beatsin8(4, 0, 255), sat, bright),
+            CHSV(beatsin8(3, 0, 255), sat, bright),
             speed
     );
 

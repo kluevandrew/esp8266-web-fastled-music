@@ -21,14 +21,24 @@
 
 void AudioAction::operator()(AsyncWebServerRequest *request) {
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
-    audioAnalyzer->analyzeFrequency();
+    audioAnalyzer->analyzeFrequency(650, 30);
 
     DynamicJsonDocument response(1024);
 
     response["lastMajorPeak"] = audioAnalyzer->getLastMajorPeak();
+    response["samplingFrequency"] = audioAnalyzer->getSamplingFrequency();
+    response["samplingPeriodUS"] = audioAnalyzer->getSamplingPeriodUs();
     response["low"] = audioAnalyzer->getLow();
     response["mid"] = audioAnalyzer->getMid();
     response["high"] = audioAnalyzer->getHigh();
+    auto vReal = audioAnalyzer->getVReal();
+    auto vRealJson = response.createNestedObject("vReal");
+    auto samples = AudioAnalyzer::getSamples();
+    for (int i = 0; i < (samples >> 1); i++) {
+        auto abscissa = ((i * 1.0 * audioAnalyzer->getSamplingFrequency()) / samples);
+        String key = "f_" + String(i) + "_" + String(abscissa) + "Hz";
+        vRealJson[key] = vReal[i];
+    }
 
     json(request, response);
 }

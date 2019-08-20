@@ -19,9 +19,10 @@
 #include "IndexAction.h"
 #include <ArduinoOTA.h>
 #include <config/config.h>
+#include <Application.h>
 
 void IndexAction::operator()(AsyncWebServerRequest *request) {
-    DynamicJsonDocument response(1024);
+    DynamicJsonDocument response(SETTINGS_CAPACITY + 512);
 
     response["version"] = "0.2.0";
 
@@ -56,6 +57,10 @@ void IndexAction::operator()(AsyncWebServerRequest *request) {
     info["sketchSize"] = ESP.getSketchSize();
     info["freeSketchSpace"] = ESP.getFreeSketchSpace();
     info["sketchMD5"] = ESP.getSketchMD5();
+
+    auto settings = Application::getInstance().getSettingsStorage();
+    auto options = response.createNestedObject("options");
+    options.set(settings.getJsonDocument()->as<JsonObject>());
 
     json(request, response);
 }

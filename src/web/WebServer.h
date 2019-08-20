@@ -22,6 +22,7 @@
 
 #include <ESPAsyncWebServer.h>
 #include <config/config.h>
+#include <web/events/SocketEventHandler.h>
 
 class WebServer {
 public:
@@ -33,6 +34,8 @@ public:
 
 private:
     AsyncWebServer server = AsyncWebServer(WEB_SERVER_PORT);
+    AsyncWebSocket socket = AsyncWebSocket("/ws");
+    AsyncEventSource events = AsyncEventSource("/events");
 
     void configure();
 
@@ -41,6 +44,10 @@ private:
     static ArRequestHandlerFunction emptyAction() {
         return [](AsyncWebServerRequest *request) {};
     };
+
+    static void onSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len);
+
+    static void processWsMessage(const String& msg, AsyncWebSocketClient *client);
 };
 
 

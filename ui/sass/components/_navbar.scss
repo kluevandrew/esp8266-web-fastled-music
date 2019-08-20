@@ -1,0 +1,18 @@
+.navbar {
+  background: #1565c0;
+  color: #fff;
+  height: 56px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  line-height: 56px;
+  z-index: 1000;
+  &__title {
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+    line-height: 56px;
+    text-align: center;
+  }
+}

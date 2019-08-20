@@ -27,36 +27,36 @@ void SimpleFrequencyAnimation::animate() {
     if (direction == 1) {
         for (int i = 0; i < LED_LENGTH; i++) {
             if (i < LED_LENGTH / 3) {
-                led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), bright[2]));
+                led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), mapBright(bright[2])));
             } else if (i < LED_LENGTH * 2 / 3) {
-                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), bright[1]));
+                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
             } else if (i < LED_LENGTH) {
-                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), bright[0]));
+                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[0])));
             }
         }
     } else if (direction == 2) {
-        auto part = LED_LENGTH / 5;
+        auto part = ceil(LED_LENGTH / 5.0);
         for (int i = 0; i < LED_LENGTH; i++) {
             if (i < part) {
-                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), bright[2]));
+                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[2])));
             } else if (i < part * 2) {
-                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), bright[1]));
+                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
             } else if (i < part * 3) {
-                led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), bright[0]));
+                led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), mapBright(bright[0])));
             } else if (i < part * 4) {
-                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), bright[1]));
-            } else if (i < part * 5) {
-                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), bright[2]));
+                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
+            } else if (i < LED_LENGTH) {
+                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[2])));
             }
         }
     } else {
         for (int i = 0; i < LED_LENGTH; i++) {
             if (i < LED_LENGTH / 3) {
-                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), bright[2]));
+                led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[2])));
             } else if (i < LED_LENGTH * 2 / 3) {
-                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), bright[1]));
+                led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
             } else if (i < LED_LENGTH) {
-                led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), bright[0]));
+                led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), mapBright(bright[0])));
             }
         }
     }

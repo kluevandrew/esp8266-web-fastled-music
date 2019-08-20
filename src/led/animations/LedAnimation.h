@@ -34,6 +34,8 @@ public:
     virtual void animate() = 0;
 
     virtual void animate(CRGB strip[LED_LENGTH]);
+
+    virtual String getName() = 0;
 };
 
 

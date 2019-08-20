@@ -18,6 +18,7 @@
  */
 #include <led/animations/static/DirectColorAnimation.h>
 #include "Led.h"
+#include "AnimationFactory.h"
 
 Led::Led() : animation(new DirectColorAnimation())  {
     CFastLED::addLeds<LED_TYPE, LED_DATA_PIN, LED_COLOR_ORDER>(strip, LED_LENGTH);
@@ -53,4 +54,8 @@ void Led::setAnimation(LedAnimation *newAnimation) {
     FastLED.clear(true);
     delete this->animation;
     this->animation = newAnimation;
+}
+
+void Led::setAnimation(const String &name) {
+    setAnimation(AnimationFactory::create(name.c_str()));
 }

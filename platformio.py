@@ -14,5 +14,4 @@ if os.path.isfile('device.json'):
 
 
 if "uploadfs" in BUILD_TARGETS:
-    print("uploadfs")
     env.Execute("npm run build")

@@ -33,6 +33,10 @@ public:
     void animate() override {};
 
     void animate(CRGB *strip) override;
+
+    String getName() override {
+        return "DotBeatAnimation";
+    };
 };
 
 

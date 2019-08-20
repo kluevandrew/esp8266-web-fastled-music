@@ -31,6 +31,10 @@ public:
 
     void animate() override;
 
+    String getName() override {
+        return "DirectColorAnimation";
+    };
+
 private:
     unsigned long currentSpeed = 0;
     unsigned int currentColor = 0;

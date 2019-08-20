@@ -20,9 +20,9 @@
 #include <Application.h>
 
 void SpectrumAnalyzerFrequencyAnimation::animate() {
-    uint8_t startColor = getOption("SpectrumAnalyzerFrequencyAnimation.startColor", 0);
-    uint8_t step = getOption("SpectrumAnalyzerFrequencyAnimation.step", 5);
-    uint8_t smooth = getOption("SpectrumAnalyzerFrequencyAnimation.smooth", 2);
+    uint8_t startColor = getLimitedByteOption("SpectrumAnalyzerFrequencyAnimation.startColor", 0, 255);
+    uint8_t step = getLimitedByteOption("SpectrumAnalyzerFrequencyAnimation.step", 5, 1);
+    uint8_t smooth = getLimitedByteOption("SpectrumAnalyzerFrequencyAnimation.smooth", 2, 1);
 
     auto led = Application::getInstance().getLed();
     calculateBright("SpectrumAnalyzer");
@@ -52,7 +52,7 @@ void SpectrumAnalyzerFrequencyAnimation::animate() {
                 0,
                 255
         );
-        brightness = constrain(brightness, 0, 255);
+        brightness = mapBright(constrain(brightness, 0, 255));
 
         led->setColorAt(i, CHSV(hueIndex, 255, brightness));
         led->setColorAt(LED_LENGTH - i - 1, led->getColorAt(i));

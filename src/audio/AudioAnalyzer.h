@@ -37,7 +37,7 @@ public:
     */
     ~AudioAnalyzer();
 
-    void analyzeFrequency();
+    void analyzeFrequency(unsigned int micLowPass, uint8_t fftLowPass);
 
     void analyzeLevels();
 
@@ -53,6 +53,12 @@ public:
 
     double getMaxFrequency() const;
 
+    static uint16_t getSamples();
+
+    double getSamplingFrequency() const;
+
+    unsigned int getSamplingPeriodUs() const;
+
     int RsoundLevel{};
     int LsoundLevel{};
     int RcurrentLevel{};
@@ -62,7 +68,7 @@ public:
 private:
     arduinoFFT fft;
     static const uint16_t samples = ADC_SAMPLES; // This value MUST ALWAYS be a power of 2
-    const double samplingFrequency = 20000;
+    const double samplingFrequency = ADC_SAMPLING_FREQUENCY;
     unsigned int samplingPeriodUS;
     unsigned long microseconds{};
     double vReal[samples]{};
@@ -77,7 +83,7 @@ private:
     /**
      * Analyze data on analog channel
      */
-    void sampling();
+    void sampling(unsigned int micLowPass);
 };
 
 

@@ -37,6 +37,10 @@ public:
 
     void animate(CRGB *strip) override;
 
+    String getName() override {
+        return "ConfettiAnimation";
+    };
+
 private:
     int hue = 50;
     uint8_t sat = 100;

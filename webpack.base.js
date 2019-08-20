@@ -21,7 +21,7 @@ module.exports = {
     },
     output: {
         path: PATHS.build,
-        filename: 'app.[contenthash].js',
+        filename: 'app.js',
         publicPath: '/'
     },
     resolve: {
@@ -42,17 +42,14 @@ module.exports = {
                 }),
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/,
-                loaders: [
-                    'file-loader?hash=sha512&digest=hex&name=[name]_[hash].[ext]&outputPath=images/',
-                    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
-                ]
-            },
-            {
-                test: /\.twig/,
-                exclude: /node_modules/,
-                loader: "twig-loader?exportAsEs6Default"
-            },
+                test: /\.(html)$/,
+                use: {
+                    loader: 'html-loader',
+                    options: {
+                        attrs: [':data-src']
+                    }
+                }
+            }
         ],
     },
     plugins: [
@@ -63,7 +60,7 @@ module.exports = {
         }),
         Autoprefixer,
         new ExtractTextPlugin({
-            filename: 'app.[hash].css',
+            filename: 'app.css',
             allChunks: true,
         }),
         new OptimizeCssAssetsPlugin({
@@ -74,8 +71,8 @@ module.exports = {
             },
             canPrint: true
         }),
-        new CopyPlugin([
-            {from: 'assets', to: 'assets', force: true},
-        ])
+        // new CopyPlugin([
+        //     {from: 'icons.woff2', to: 'icons.woff2', force: true},
+        // ])
     ],
 };

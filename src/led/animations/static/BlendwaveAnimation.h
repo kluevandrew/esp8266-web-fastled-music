@@ -34,6 +34,9 @@ public:
 
     void animate(CRGB *strip) override;
 
+    String getName() override {
+        return "BlendwaveAnimation";
+    };
 private:
     CRGB color1{};
     CRGB color2{};

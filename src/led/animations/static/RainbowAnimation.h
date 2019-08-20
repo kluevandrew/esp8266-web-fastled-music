@@ -32,6 +32,9 @@ public:
 
     void animate() override;
 
+    String getName() override {
+        return "RainbowAnimation";
+    };
 private:
     unsigned long timer = 0;
     unsigned int steps = 0.0;

@@ -44,6 +44,8 @@ public:
 
     void setAnimation(LedAnimation *animation);
 
+    void setAnimation(const String &name);
+
 private:
     CRGB strip[LED_LENGTH];
 

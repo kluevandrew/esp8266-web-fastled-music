@@ -20,41 +20,37 @@
 #include "AudioAnalyzer.h"
 
 AudioAnalyzer::AudioAnalyzer() {
-    fft = arduinoFFT();
+    fft = arduinoFFT(vReal, vImag, samples, samplingFrequency);
     samplingPeriodUS = (int) round(1000000 * (1.0 / samplingFrequency));
 }
 
 AudioAnalyzer::~AudioAnalyzer() = default;
 
-void AudioAnalyzer::analyzeFrequency() {
-    sampling();
+void AudioAnalyzer::analyzeFrequency(unsigned int micLowPass, uint8_t fftLowPass) {
+    sampling(micLowPass);
 
-    fft.Windowing(vReal, samples, FFT_WIN_TYP_HAMMING, FFT_FORWARD);  /* Weigh data */
-    fft.Compute(vReal, vImag, samples, FFT_FORWARD); /* Compute FFT */
-    fft.ComplexToMagnitude(vReal, vImag, samples);
-    lastMajorPeak = fft.MajorPeak(vReal, samples, samplingFrequency);
-    int tones = samples / 2;
-    const int MINIMUM = 30; // @fixme
+    fft.Windowing(FFT_WIN_TYP_HAMMING, FFT_FORWARD);  /* Weigh data */
+    fft.Compute(FFT_FORWARD); /* Compute FFT */
+    fft.ComplexToMagnitude();
+    lastMajorPeak = fft.MajorPeak();
 
-    for (int i = 2; i < tones; i++) {
-        if (vReal[i] < MINIMUM) {
+    for (int i = 2; i < 7; i++) {
+        if (vReal[i] < fftLowPass) {
             vReal[i] = 0;
         }
     }
 
-    int lowEnd = 32; // @fixme calculate that according to samples count, make it configurable
-    int midEnd = 96; // @fixme calculate that according to samples count, make it configurable too
-    for (int i = 2; i < lowEnd; i++) {
+    for (int i = 2; i < 7; i++) {
         if (vReal[i] > low) {
             low = vReal[i];
         }
     }
-    for (int i = lowEnd; i < midEnd; i++) {
+    for (int i = 8; i < 34; i++) {
         if (vReal[i] > mid) {
             mid = vReal[i];
         }
     }
-    for (int i = midEnd; i < samples; i++) {
+    for (int i = 34; i < 127; i++) {
         if (vReal[i] > high) {
             high = vReal[i];
         }
@@ -66,13 +62,12 @@ void AudioAnalyzer::analyzeFrequency() {
     }
 }
 
-void AudioAnalyzer::sampling() {
+void AudioAnalyzer::sampling(unsigned int micLowPass) {
     unsigned int lowPass = Application::getInstance().getSettingsStorage().get("global.sampling.filter", 650);
     microseconds = micros();
     for (int i = 0; i < samples; i++) {
         vReal[i] = Application::getInstance().getAdc()->analogRead(ADC_MIC_CHANNEL); // @fixme make it dynamically configurable, in case of two mics for example
-        if (vReal[i] <
-            lowPass) { // @fixme remove hardcoded LOW_PASS_FILTER, make it as param of AudioAnalyzer::sampling(int lowPassFilter)
+        if (vReal[i] < micLowPass) {
             vReal[i] = 0;
         }
         vImag[i] = 0;
@@ -80,6 +75,10 @@ void AudioAnalyzer::sampling() {
         }
         microseconds += samplingPeriodUS;
     };
+}
+
+unsigned int AudioAnalyzer::getSamplingPeriodUs() const {
+    return samplingPeriodUS;
 }
 
 double AudioAnalyzer::getLastMajorPeak() {
@@ -106,6 +105,14 @@ double AudioAnalyzer::getMaxFrequency() const {
     return maxFrequency;
 }
 
+uint16_t AudioAnalyzer::getSamples() {
+    return samples;
+}
+
+double AudioAnalyzer::getSamplingFrequency() const {
+    return samplingFrequency;
+}
+
 void AudioAnalyzer::analyzeLevels() {
     bool MONO = true;
     float EXP = 1.4;
@@ -126,7 +133,7 @@ void AudioAnalyzer::analyzeLevels() {
     }
 
     // фильтруем по нижнему порогу шумов
-    RsoundLevel = map(RsoundLevel, 30, 8191, 0, 500);
+    RsoundLevel = map(RsoundLevel, 30, 4095, 0, 500);
 //    if (!MONO)LsoundLevel = map(LsoundLevel, lowPass, 1023, 0, 500);
 
     // ограничиваем диапазон

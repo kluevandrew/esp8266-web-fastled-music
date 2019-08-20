@@ -23,12 +23,13 @@ void RainbowAnimation::animate() {
 
     unsigned int step = max(getOption<int>("RainbowAnimation.step", 1), 1);
     unsigned int period = max(getOption<int>("RainbowAnimation.period", 1), 1);
-    unsigned int speed = max(getOption<int>("RainbowAnimation.speed", 30), 1);
-    uint8_t bright = getLimitedByteOption("RainbowAnimation.bright", 128);
+    unsigned int delay = max(getOption<int>("RainbowAnimation.delay", 30), 1);
+    uint8_t saturation = getLimitedByteOption("RainbowAnimation.color.sat", 255);
+    uint8_t bright = getLimitedByteOption("RainbowAnimation.color.bright", 128);
 
     auto led = Application::getInstance().getLed();
 
-    if (millis() - timer > speed) {
+    if (millis() - timer > delay) {
         timer = millis();
         color += period;
         if (color > 255) {
@@ -40,7 +41,7 @@ void RainbowAnimation::animate() {
     }
     steps = color;
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(steps, 255, bright));
+        led->setColorAt(i, CHSV(steps, saturation, bright));
         steps += step;
         if (steps > 255) {
             steps = 0;

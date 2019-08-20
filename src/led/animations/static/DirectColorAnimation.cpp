@@ -19,10 +19,10 @@
 #include "DirectColorAnimation.h"
 
 #define DEFAULT_HUE 0
-#define DEFAULT_SATURATION 255
+#define DEFAULT_SATURATION 0
 #define DEFAULT_BRIGHT 128
 #define DEFAULT_STEP 5
-#define DEFAULT_SPEED 5
+#define DEFAULT_DELAY 5
 
 #define DO_STEP(CURRENT_NAME, NAME) if (CURRENT_NAME > NAME) { \
                                         if ((CURRENT_NAME - step) < NAME) { \
@@ -39,8 +39,8 @@
                                     }
 
 void DirectColorAnimation::animate() {
-    unsigned long speed = max(10, getOption("DirectColorAnimation.speed", DEFAULT_SPEED));
-    if (millis() - timer <= speed) {
+    unsigned long delay = max(10, getOption("DirectColorAnimation.delay", DEFAULT_DELAY));
+    if (millis() - timer <= delay) {
         return;
     }
     timer = millis();

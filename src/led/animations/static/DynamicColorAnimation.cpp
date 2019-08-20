@@ -22,19 +22,18 @@
 #define DEFAULT_HUE 0
 #define DEFAULT_SATURATION 255
 #define DEFAULT_BRIGHT 255
-#define DEFAULT_SPEED 100
+#define DEFAULT_DELAY 100
 
 void DynamicColorAnimation::animate() {
-    unsigned long speed = getOption("DynamicColorAnimation.speed", DEFAULT_SPEED);
+    unsigned long delay = getOption("DynamicColorAnimation.delay", DEFAULT_DELAY);
 
-    if (millis() - timer > speed) {
+    if (millis() - timer > delay) {
         timer = millis();
         uint8_t saturation = getOption("DynamicColorAnimation.color.sat", DEFAULT_SATURATION);
         uint8_t bright = getOption("DynamicColorAnimation.color.bright", DEFAULT_BRIGHT);
         if (++color > 360) {
             color = 0;
         }
-        Serial.println(color);
         FastLED.showColor(CHSV(color, saturation, bright));
     }
 }

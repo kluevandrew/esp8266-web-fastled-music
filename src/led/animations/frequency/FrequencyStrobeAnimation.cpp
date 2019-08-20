@@ -50,21 +50,21 @@ void FrequencyStrobeAnimation::animate() {
 void FrequencyStrobeAnimation::drawHighs() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), bright[2]));
+        led->setColorAt(i, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[2])));
     }
 }
 
 void FrequencyStrobeAnimation::drawMids() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), bright[1]));
+        led->setColorAt(i, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
     }
 }
 
 void FrequencyStrobeAnimation::drawLows() {
     auto led = Application::getInstance().getLed();
     for (int i = 0; i < LED_LENGTH; i++) {
-        led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), bright[0]));
+        led->setColorAt(i, CHSV(getLowColor(), getLowSaturation(), mapBright(bright[0])));
     }
 }
 

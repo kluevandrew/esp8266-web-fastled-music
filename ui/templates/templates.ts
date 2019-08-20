@@ -1,4 +1,5 @@
-declare module '*.twig' {
-    const content: (context: any) => string;
+declare module '*.html' {
+    const content: string;
     export default content;
 }
+

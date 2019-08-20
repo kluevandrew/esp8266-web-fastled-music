@@ -21,17 +21,18 @@
 
 void RunningFrequencyAnimation::animate() {
     uint8_t mode = getOption("RunningFrequencyAnimation.mode", 0);
-    unsigned long speed = getOption("RunningFrequencyAnimation.speed", 11);
+    unsigned long delay = getOption("RunningFrequencyAnimation.delay", 11);
 
     auto led = Application::getInstance().getLed();
     calculateBright("RunningFrequencyAnimation");
 
     led->setColorAt(LED_LENGTH / 2, CHSV(getEmptyColor(), getEmptySaturation(), getMidSaturation()));
-    int countOfVariants = 0;
-    countOfVariants += (int) running[0];
-    countOfVariants += (int) running[1];
-    countOfVariants += (int) running[2];
+    uint8_t countOfVariants = 0;
+    countOfVariants += (uint8_t) running[0];
+    countOfVariants += (uint8_t) running[1];
+    countOfVariants += (uint8_t) running[2];
     double maximum = max(levels[0], max(levels[1], levels[2]));
+    Serial.println(maximum);
 
     if (running[0] || running[1] || running[2]) {
         switch (mode) {
@@ -42,26 +43,26 @@ void RunningFrequencyAnimation::animate() {
                     running[2] = maximum == levels[2];
                 }
                 if (running[0]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(getLowColor(), getLowColor(), bright[0]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getLowColor(), getLowColor(), mapBright(bright[0])));
                 } else if (running[1]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(getMidColor(), getMidSaturation(), bright[1]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
                 } else if (running[2]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(getHighColor(), getHighSaturation(), bright[2]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[2])));
                 }
                 break;
             case 1:
                 if (running[2]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(getHighColor(), getHighSaturation(), bright[2]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getHighColor(), getHighSaturation(), mapBright(bright[2])));
                 }
                 break;
             case 2:
                 if (running[1]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(getMidColor(), getMidSaturation(), bright[1]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getMidColor(), getMidSaturation(), mapBright(bright[1])));
                 }
                 break;
             case 3:
                 if (running[0]) {
-                    led->setColorAt(LED_LENGTH / 2, CHSV(getLowColor(), getLowColor(), bright[0]));
+                    led->setColorAt(LED_LENGTH / 2, CHSV(getLowColor(), getLowColor(), mapBright(bright[0])));
                 }
                 break;
             default:
@@ -72,7 +73,7 @@ void RunningFrequencyAnimation::animate() {
 
 
     led->setColorAt((LED_LENGTH / 2) - 1, led->getColorAt(LED_LENGTH / 2));
-    if (millis() - stepTimer > speed) {
+    if (millis() - stepTimer > delay) {
         stepTimer = millis();
         for (int i = 0; i < LED_LENGTH / 2 - 1; i++) {
             led->setColorAt(i, led->getColorAt(i + 1));

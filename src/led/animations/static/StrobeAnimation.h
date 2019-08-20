@@ -32,11 +32,13 @@ public:
 
     void animate() override;
 
+    String getName() override {
+        return "StrobeAnimation";
+    };
 private:
-    int delay = 200;
-    CRGB colorOn = CRGB::White;
-    CRGB colorOff = CRGB::Black;
-    bool state = false;
+    unsigned long nextTickAt = 0;
+    bool way = true;
+    unsigned int currentBright = 0;
 };
 
 #endif //ESP8266_WEB_FASTLED_MUSIC_STROBEANIMATION_H

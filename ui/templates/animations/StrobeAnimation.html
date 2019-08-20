@@ -1,0 +1,10 @@
+<div class="form">
+    <h1>Вспышка</h1>
+    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Длительность", key: "StrobeAnimation.timeOn", min: 1, max: 500}) %}</div>
+    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Шаг", key: "StrobeAnimation.stepOn", min: 1, max: 255}) %}</div>
+    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Задержка", key: "StrobeAnimation.delayOn", min: 1, max: 255}) %}</div>
+    <div class="form__row">{% engine.include("inputs/color.html", {label: "Цвет", key: "StrobeAnimation.colorOn"}) %}</div>
+
+    <h1>Темнота</h1>
+    <div class="form__row">{% engine.include("inputs/slider.html", {label: "Длительность", key: "StrobeAnimation.timeOff", min: 1, max: 500}) %}</div>
+</div>

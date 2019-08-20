@@ -21,6 +21,9 @@
 #include <ArduinoOTA.h>
 
 Application::Application() {
+    Serial.begin(115200);
+    Serial.println();
+    SPIFFS.begin();
     settingsStorage = new SettingsStorage();
     adc = new ExternalADC();
     audioAnalyzer = new AudioAnalyzer();
@@ -49,10 +52,6 @@ SettingsStorage &Application::getSettingsStorage() {
 }
 
 void Application::setup() {
-    Serial.begin(115200);
-    Serial.println();
-
-    SPIFFS.begin();
     apMode = WiFiManager::autoConnect();
 
     if (!apMode) {

@@ -27,6 +27,10 @@ public:
     ~NoopAnimation() override = default;
 
     void animate() override;
+
+    String getName() override {
+        return "NoopAnimation";
+    };
 };
 
 

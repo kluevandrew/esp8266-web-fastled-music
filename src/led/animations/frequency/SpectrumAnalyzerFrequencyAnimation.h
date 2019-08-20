@@ -31,7 +31,6 @@ public:
 
     void animate() override;
 
-protected:
     String getName() override {
         return "SpectrumAnalyzerFrequencyAnimation";
     };
