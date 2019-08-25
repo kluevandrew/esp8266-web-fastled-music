@@ -52,6 +52,8 @@ protected:
     static void handleGetWifiInfoEvent(JsonVariant &payload, Response &response);
 
     static void handleConnectWifiEvent(JsonVariant &payload, Response &response);
+
+    static void handleResetWifiEvent(JsonVariant &payload, Response &response);
 };
 
 

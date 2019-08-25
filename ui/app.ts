@@ -17,7 +17,7 @@ import * as device from "../device.json";
     ui.showConnectionError();
   });
 
-  api.onReConnect(() => {
+  api.onConnect(() => {
     ui.hideConnectionError();
   });
 

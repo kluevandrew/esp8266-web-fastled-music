@@ -5,6 +5,7 @@ export class Api {
   private options: any;
   private currentAnimation: any;
   private callbacks: {[key: string]: ((payload?: any) => void)[]} = {};
+  private reconnectTimer = 1000;
 
   constructor(private host: string) {
   }
@@ -20,15 +21,25 @@ export class Api {
       this.socket = new WebSocket(`ws://${this.host}/ws`, ['arduino']);
       this.socket.binaryType = "arraybuffer";
       this.socket.onopen = (e) => {
-        this.fireEvent('ws-connect', e);
+        this.fireEvent('ws_connect', e);
         resolve(e);
       };
       this.socket.onerror = (e) => {
-        this.fireEvent('ws-error', e);
+        this.fireEvent('ws_error', e);
+        this.resolvers = [];
+        this.reconnectTimer *= 2;
+        setTimeout(() => {
+          this.connectWs();
+        }, this.reconnectTimer);
         reject(e);
       };
       this.socket.onclose = (e) => {
-        this.fireEvent('ws-close', e);
+        this.fireEvent('ws_close', e);
+        this.resolvers = [];
+        this.reconnectTimer *= 2;
+        setTimeout(() => {
+          this.connectWs();
+        }, this.reconnectTimer);
       };
       this.socket.onmessage = (e) => {
         try {
@@ -52,10 +63,14 @@ export class Api {
   }
 
   public send(event: any, message: any): Promise<any> {
-    ++this.counter;
+    const index = ++this.counter;
     return new Promise((resolve, reject) => {
-      this.resolvers[this.counter] = {resolve, reject};
+      this.resolvers[index] = {resolve, reject};
       this.socket.send(JSON.stringify({id: this.counter, event: event, payload: message}));
+      setTimeout(() => {
+        this.resolvers[index] = null;
+        reject('timeout');
+      }, 5000)
     });
   }
 
@@ -116,19 +131,15 @@ export class Api {
   }
 
   onError(callback: () => void) {
-    this.on('ws-error', callback);
-  }
-
-  onReConnect(callback: () => void) {
-    this.on('ws-reconnect', callback);
+    this.on('ws_error', callback);
   }
 
   onConnect(callback: () => void) {
-    this.on('ws-connect', callback);
+    this.on('ws_connect', callback);
   }
 
   onClose(callback: () => void) {
-    this.on('ws-close', callback);
+    this.on('ws_close', callback);
   }
 
   private fireEvent(event: string | any | Event, payload: any = {}) {
@@ -151,7 +162,11 @@ export class Api {
     }
   }
 
-  public connectWifi(ssid: string, password: unknown) {
-    return this.send('connectWifi', {ssid, password});
+  public connectWifi(ssid: string, pass: unknown) {
+    return this.send('connectWifi', {ssid, pass});
+  }
+
+  public resetWifi() {
+    return this.send('resetWifi', {});
   }
 }

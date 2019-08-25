@@ -27,7 +27,14 @@ export class Ui {
           document.location.reload();
         }, 10000)
       }
-    })
+    });
+    this.api.onClose(() => {
+      let text = 'Переподключение';
+      this.showLoader("infinity", { text });
+    });
+    this.api.onConnect(() => {
+      this.hideLoader();
+    });
   }
 
   public bind(element: HTMLElement) {
@@ -158,6 +165,14 @@ export class Ui {
           })
         })
       });
+
+      element.querySelectorAll('[data-reset-wifi]').forEach((button: HTMLButtonElement) => {
+        button.addEventListener('click', () => {
+          if (confirm('Вы уверены что хотите сбросить настройки WiFi?')) {
+            this.api.resetWifi();
+          }
+        })
+      });
     } catch (e) {
       console.error(e)
     }
@@ -275,11 +290,9 @@ export class Ui {
   }
 
   public showConnectionError() {
-    this.showLoader('infinity')
   }
 
   public hideConnectionError() {
-    this.hideLoader();
   }
 
   public displayAnimationBlock(animation: string) {

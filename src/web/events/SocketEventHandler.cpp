@@ -51,6 +51,7 @@ void SocketEventHandler::handle(const String &msg, AsyncWebSocketClient *client)
     else HANDLER("getOptions", handleGetOptionsEvent)
     else HANDLER("getWifiInfo", handleGetWifiInfoEvent)
     else HANDLER("connectWifi", handleConnectWifiEvent)
+    else HANDLER("resetWifi", handleResetWifiEvent)
     else {
         ERROR_RESPONSE("No such action")
     }
@@ -183,8 +184,20 @@ void SocketEventHandler::handleConnectWifiEvent(JsonVariant &payload, SocketEven
     String ssid = payload["ssid"];
     if (payload.containsKey("pass")) {
         String pass = payload["pass"];
+        Serial.print("WiFiManager::connect(");
+        Serial.print(ssid);
+        Serial.print(", ");
+        Serial.print(pass);
+        Serial.println(")");
         WiFiManager::connect(ssid, pass);
     } else {
+        Serial.print("WiFiManager::connect(");
+        Serial.print(ssid);
+        Serial.println(")");
         WiFiManager::connect(ssid);
     }
+}
+
+void SocketEventHandler::handleResetWifiEvent(JsonVariant &payload, SocketEventHandler::Response &response) {
+    WiFiManager::reset();
 }
