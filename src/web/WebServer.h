@@ -32,10 +32,16 @@ public:
 
     void listen();
 
+    void sendEvent(const String &name) {
+        DynamicJsonDocument event(128);
+        sendEvent(name, event);
+    };
+
+    void sendEvent(const String &name, DynamicJsonDocument &message);
+
 private:
     AsyncWebServer server = AsyncWebServer(WEB_SERVER_PORT);
     AsyncWebSocket socket = AsyncWebSocket("/ws");
-    AsyncEventSource events = AsyncEventSource("/events");
 
     void configure();
 
@@ -45,9 +51,11 @@ private:
         return [](AsyncWebServerRequest *request) {};
     };
 
-    static void onSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len);
+    static void
+    onSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data,
+                  size_t len);
 
-    static void processWsMessage(const String& msg, AsyncWebSocketClient *client);
+    static void processWsMessage(const String &msg, AsyncWebSocketClient *client);
 };
 
 

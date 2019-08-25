@@ -9,7 +9,19 @@ import * as device from "../device.json";
 
   const renderer = new Renderer();
   const ui = new Ui(api, renderer);
+  ui.init();
   api.connect().then(() => {
-    ui.init();
+    ui.hideLoader();
+    ui.displayAnimationBlock(api.getCurrentAnimation());
+  }).catch(() => {
+    ui.showConnectionError();
+  });
+
+  api.onReConnect(() => {
+    ui.hideConnectionError();
+  });
+
+  api.onError(() => {
+    ui.showConnectionError();
   });
 })();

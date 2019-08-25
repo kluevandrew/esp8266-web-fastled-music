@@ -95,7 +95,7 @@ WiFiManager::ScanResult WiFiManager::scan() {
             network.ssid = WiFi.SSID(i);
             network.rssi = WiFi.RSSI(i);
             network.bssid = WiFi.BSSIDstr(i);
-            network.encryption = WiFi.encryptionType(i) == ENC_TYPE_NONE;
+            network.encryption = WiFi.encryptionType(i) != ENC_TYPE_NONE;
             network.channel = WiFi.channel(i);
             network.isHidden = WiFi.isHidden(i);
             result.networks.push_back(network);

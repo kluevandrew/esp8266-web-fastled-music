@@ -35,8 +35,8 @@ public:
         return "DynamicColor";
     };
 private:
-    unsigned int color = 0;
-    unsigned long timer = 0;
+    uint8_t color = 0;
+    unsigned long long timer = 0;
 };
 
 

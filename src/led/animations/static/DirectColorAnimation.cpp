@@ -45,7 +45,7 @@ void DirectColorAnimation::animate() {
     }
     timer = millis();
 
-    unsigned int color = getHueOption("color.hue", DEFAULT_HUE);
+    uint8_t color = getHueOption("color.hue", DEFAULT_HUE);
     uint8_t bright = getOption("color.bright", DEFAULT_BRIGHT);
     uint8_t saturation = getOption("color.sat", DEFAULT_SATURATION);
     uint8_t step = max(1, getOption<int>("step", DEFAULT_STEP));

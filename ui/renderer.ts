@@ -22,13 +22,12 @@ export class Renderer {
   }
 
   private compileTemplate(template: string, context: any = {}) {
+    if (!template) {
+      return '';
+    }
     return template
-      .replace(/#if\s+(?<label>[a-zA-Z]+?)\s*\((?<if>.+?)\)(?<code>(?:.|\n)*)#end\k<label>(?=\s+$)/igm, (match: string, ...groups:any[]) => {
-        let named = groups[5];
-        return this.evalTemplateCode(named.if.trim(), context) ? this.compileTemplate(named.code, context) : '';
-      })
       .replace(
-        /#foreach\s+(?<label>[a-zA-Z]+?)\s*\((?<array>.+?)\s+as\s+(?<item>[a-zA-Z][a-zA-Z0-9_]*)(?:\s*,\s*(?<key>[a-zA-Z][a-zA-Z0-9_]*))?\)(?<code>(?:.|\n)*)#end\k<label>/igm,
+        /#foreach\s+(?<label>[a-z]+)\s*\((?<array>.+?)\s+as\s+(?<item>[a-z][a-z0-9_]*)(?:\s*,\s*(?<key>[a-zA-Z][a-z0-9_]*))?\)(?<code>(?:.|\n)*)#end\k<label>(?=\s+|$)/igm,
         (match: string, ...groups:any[]) => {
           let named = groups[7];
 
@@ -53,6 +52,10 @@ export class Renderer {
           context[named.key.trim()] = undefined;
         }
         return value;
+      })
+      .replace(/#if\s+(?<label>[a-z]+)\s*\((?<if>.+?)\)(?<code>(?:.|\n)*)#end\k<label>(?=\s+|$)/igm, (match: string, ...groups:any[]) => {
+        let named = groups[5];
+        return this.evalTemplateCode(named.if.trim(), context) ? this.compileTemplate(named.code, context) : '';
       })
       .replace(/\{\%\s*?(.+?)\s*?\%\}/ig, (match: string, code: string) => {
         return this.evalTemplateCode(code.trim(), context);

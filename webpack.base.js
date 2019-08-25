@@ -71,8 +71,8 @@ module.exports = {
             },
             canPrint: true
         }),
-        // new CopyPlugin([
-        //     {from: 'icons.woff2', to: 'icons.woff2', force: true},
-        // ])
+        new CopyPlugin([
+            {from: 'favicon.ico', to: 'favicon.ico', force: true},
+        ])
     ],
 };

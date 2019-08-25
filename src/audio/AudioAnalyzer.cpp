@@ -34,7 +34,7 @@ void AudioAnalyzer::analyzeFrequency(unsigned int micLowPass, uint8_t fftLowPass
     fft.ComplexToMagnitude();
     lastMajorPeak = fft.MajorPeak();
 
-    for (int i = 2; i < 7; i++) {
+    for (int i = 2; i < 127; i++) {
         if (vReal[i] < fftLowPass) {
             vReal[i] = 0;
         }
@@ -57,6 +57,10 @@ void AudioAnalyzer::analyzeFrequency(unsigned int micLowPass, uint8_t fftLowPass
     }
 
     maxFrequency = max(low, max(mid, high));
+    DynamicJsonDocument event(256);
+    event["lastMajorPeak"] = lastMajorPeak;
+    Application::getInstance().getWebServer()->sendEvent("frequencyAnalyze", event);
+
     if (maxFrequency < 5) {
         maxFrequency = 5; // Why AlexGayver? Why?  @fixme move to params as minFrequency, make it as param of AudioAnalyzer::analyzeFrequency(uint8_t minFrequency, int lowPassFilter)
     }

@@ -19,14 +19,14 @@
 #include <Application.h>
 #include "MusicAnimation.h"
 
-void MusicAnimation::calculateBright(const String& animationName) {
-    uint8_t smoothStep = getOption((animationName + ".smoothStep").c_str(), 20);
-    uint8_t minimalBright = getOption((animationName + ".minimalBright").c_str(), 30);
-    double smoothFrequency = getOption((animationName + ".smoothFrequency").c_str(), 0.8);
-    double maxFrequencyCoefficient = getOption((animationName + ".maxFrequencyCoefficient").c_str(), 1.2);
-    double averageCoefficient = getOption((animationName + ".averageCoefficient").c_str(), 0.006);
-    unsigned int micLowPass = getOption((animationName + ".micLowPass").c_str(), 650);
-    uint8_t fftLowPass = getOption((animationName + ".fftLowPass").c_str(), 30);
+void MusicAnimation::calculateBright() {
+    uint8_t smoothStep = getOption("smoothStep", 20);
+    uint8_t minimalBright = getOption("minimalBright", 30);
+    double smoothFrequency = getOption("smoothFrequency", 0.8);
+    double maxFrequencyCoefficient = getOption("maxFrequencyCoefficient", 1.2);
+    double averageCoefficient = getOption("averageCoefficient", 0.006);
+    unsigned int micLowPass = getOption("micLowPass", 650);
+    uint8_t fftLowPass = getOption("fftLowPass", 30);
 
     auto audioAnalyzer = Application::getInstance().getAudioAnalyzer();
     audioAnalyzer->analyzeFrequency(micLowPass, fftLowPass);

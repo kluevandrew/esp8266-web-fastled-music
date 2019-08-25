@@ -61,7 +61,7 @@ void SettingsStorage::save() {
 
 void SettingsStorage::truncate() {
     SPIFFS.remove("/config.json");
-    delete(jsonDocument);
+    delete jsonDocument;
     jsonDocument = new DynamicJsonDocument(SETTINGS_CAPACITY);
     save();
 }

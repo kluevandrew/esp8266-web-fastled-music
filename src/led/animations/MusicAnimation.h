@@ -38,50 +38,46 @@ protected:
     double averageLevels[3] = {0.0, 0.0, 0.0};
     double levels[3] = {0.0, 0.0, 0.0};
 
-    void calculateBright() {
-        calculateBright(getName());
-    };
-
-    void calculateBright(const String &animationName);
+    void calculateBright();
 
     uint8_t getHighColor() {
-        return getOption((getName() + ".highColor.hue").c_str(), (int) HUE_BLUE);
+        return getOption("highColor.hue", (int) HUE_BLUE);
     }
 
     uint8_t getHighSaturation() {
-        return getOption((getName() + ".highColor.sat").c_str(), 255);
+        return getOption("highColor.sat", 255);
     }
 
     uint8_t getMidColor() {
-        return getOption((getName() + ".midColor.hue").c_str(), (int) HUE_GREEN);
+        return getOption("midColor.hue", (int) HUE_GREEN);
     }
 
     uint8_t getMidSaturation() {
-        return getOption((getName() + ".midColor.sat").c_str(), 255);
+        return getOption("midColor.sat", 255);
     }
 
     uint8_t getLowColor() {
-        return getOption((getName() + ".lowColor.hue").c_str(), (int) HUE_RED);
+        return getOption("lowColor.hue", (int) HUE_RED);
     }
 
     uint8_t getLowSaturation() {
-        return getOption((getName() + ".lowColor.sat").c_str(), 255);
+        return getOption("lowColor.sat", 255);
     }
 
     uint8_t getEmptyColor() {
-        return getOption((getName() + ".emptyColor.hue").c_str(), (int) HUE_PURPLE);;
+        return getOption("emptyColor.hue", (int) HUE_PURPLE);;
     }
 
     uint8_t getEmptySaturation() {
-        return getOption((getName() + ".emptyColor.sat").c_str(), 255);
+        return getOption("emptyColor.sat", 255);
     }
 
     uint8_t getMinimalBright() {
-        return getOption((getName() + ".minimalBright").c_str(), 255);
+        return getOption("minimalBright", 255);
     }
 
     uint8_t mapBright(uint8_t val) {
-        uint8_t max = getOption((getName() + ".maxBright").c_str(), 255);
+        uint8_t max = getOption("maxBright", 255);
         return map(val, 0, 255, 0, max);
     }
 };

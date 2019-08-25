@@ -3,6 +3,7 @@ import { Renderer } from "./renderer";
 import { ANIMATIONS } from "./config";
 import * as noUiSlider from "nouislider";
 import ReinventedColorWheel from "reinvented-color-wheel";
+import { SimpleGraph } from "./graph";
 
 
 export class Ui {
@@ -11,12 +12,21 @@ export class Ui {
 
   public init() {
     document.body.append(this.bind(this.renderer.render('app.html', {ANIMATIONS})));
-    setImmediate(() => {
-      const settingsSelector = document.querySelector<HTMLSelectElement>('[data-animation-selector]');
-      settingsSelector.value = this.api.getCurrentAnimation();
-      const settingsBlock = document.querySelector<HTMLDivElement>('[data-animation-settings]');
-      settingsBlock.innerHTML = '';
-      settingsBlock.append(this.bind(this.renderer.render(`animations/${this.api.getCurrentAnimation()}.html`, {animation: this.api.getCurrentAnimation()})));
+    this.api.on('ota_start', () => {
+      let text = 'Идёт обновление';
+      this.showLoader("progress", { text });
+    });
+    this.api.on('ota_progress', (message) => {
+      let text = 'Идёт обновление';
+      let percent = message.progress / (message.total / 100);
+      if (percent < 95) {
+        this.showLoader("progress", { percent, text });
+      } else {
+        this.showLoader("infinity", { percent, text });
+        setTimeout(() => {
+          document.location.reload();
+        }, 10000)
+      }
     })
   }
 
@@ -127,6 +137,27 @@ export class Ui {
           this.loadAdditionOptions(button.dataset.toggleAdditionOptions);
         })
       });
+
+      element.querySelectorAll('[data-refresh-wifi]').forEach((button: HTMLButtonElement) => {
+        button.addEventListener('click', () => {
+          this.loadAdditionOptions('wifi');
+        })
+      });
+
+      element.querySelectorAll('[data-connect-wifi]').forEach((button: HTMLButtonElement) => {
+        button.addEventListener('click', () => {
+          const ssid = button.dataset.connectWifi;
+          const secure = button.dataset.connectWifiSecure == '1';
+          this.openModal('modals/wifi-connect.html', {ssid, secure}).then((form: HTMLFormElement) => {
+            const input = form.querySelector<HTMLInputElement>('input[type=password]');
+            let password = null;
+            if (input) {
+              password = input.value;
+            }
+            this.api.connectWifi(ssid, password)
+          })
+        })
+      });
     } catch (e) {
       console.error(e)
     }
@@ -136,9 +167,7 @@ export class Ui {
 
   public setAnimation(animation: string) {
     this.api.setAnimation(animation).then(() => {
-      const settingsBlock = document.querySelector<HTMLDivElement>('[data-animation-settings]');
-      settingsBlock.innerHTML = '';
-      settingsBlock.append(this.bind(this.renderer.render(`animations/${animation}.html`, {animation: animation})));
+      this.displayAnimationBlock(animation);
     })
   }
 
@@ -171,23 +200,133 @@ export class Ui {
     return +(test.toFixed(digits));
   }
 
-  private loadAdditionOptions(type: string) {
+  public loadAdditionOptions(type: string) {
     let container = document.querySelector('[data-additional-options-content]');
-    container.innerHTML = '';
     switch (type) {
       case 'wifi':
-        this.loadWiFiOptions().then((response) => {
-            container.append(
-              this.bind(
-                this.renderer.render('options/wifi.html', response),
-              )
+        this.api.getWifiInfo().then((response) => {
+          container.innerHTML = '';
+          container.append(
+            this.bind(
+              this.renderer.render('options/wifi.html', response),
             )
-          }
+          )
+        });
+        break;
+      case 'adc':
+        container.innerHTML = '';
+        container.append(
+          this.bind(
+            this.renderer.render('options/adc.html', {}),
+          )
         );
+        setImmediate(() => {
+          const canvas = document.getElementById('adc-canvas') as HTMLCanvasElement;
+          const graph = new SimpleGraph(canvas);
+          const listener = function (payload: any) {
+            try {
+              graph.add(payload.lastMajorPeak);
+            } catch (e) {
+              console.error(e);
+            }
+          };
+          this.api.on('frequencyAnalyze', listener);
+          canvas.addEventListener('DOMNodeRemoved', () => {
+            this.api.off("frequencyAnalyze", listener)
+          });
+        });
+        break;
+      case 'misc':
+        container.innerHTML = '';
+        container.append(
+          this.bind(
+            this.renderer.render('options/misc.html', {}),
+          )
+        );
+        break;
     }
   }
 
-  private loadWiFiOptions() {
-    return this.api.getWifiInfo();
+  public hideLoader() {
+    const loader = document.querySelector<HTMLDivElement>('[data-loader]');
+    loader.classList.remove('loader--visible');
+    loader.classList.remove('loader--infinity');
+    loader.classList.remove('loader--progress');
+  }
+
+  public showLoader(type: string, options: any = {}) {
+    const loader = document.querySelector<HTMLDivElement>('[data-loader]');
+    if (options.percent) {
+      loader.querySelector<HTMLDivElement>('[data-loader-progress]').style.width = `${options.percent}%`;
+    } else {
+      loader.querySelector<HTMLDivElement>('[data-loader-progress]').style.width = `0%`;
+    }
+
+    if (options.text) {
+      loader.querySelector<HTMLDivElement>('[data-loader-text]').innerHTML = options.text;
+    } else {
+      loader.querySelector<HTMLDivElement>('[data-loader-text]').innerHTML = '';
+    }
+
+    loader.classList.add('loader--visible');
+    loader.classList.remove('loader--infinity');
+    loader.classList.remove('loader--progress');
+    loader.classList.add(`loader--${type}`);
+  }
+
+  public showConnectionError() {
+    this.showLoader('infinity')
+  }
+
+  public hideConnectionError() {
+    this.hideLoader();
+  }
+
+  public displayAnimationBlock(animation: string) {
+    const settingsBlock = document.querySelector<HTMLDivElement>('[data-animation-settings]');
+    settingsBlock.innerHTML = '';
+    settingsBlock.append(this.bind(this.renderer.render(`animations/${animation}.html`, {animation: animation})));
+    document.querySelectorAll('[data-animation-selector]').forEach((element: HTMLSelectElement) => {
+      element.value = animation;
+    });
+  }
+
+  private openModal(template: string, context: any) {
+    return new Promise((resolve, reject) => {
+      const overlay = document.querySelector<HTMLDivElement>('[data-modal-overlay]');
+      const element = this.renderer.render(template, context);
+
+      const bodyListener = function () {
+        destroy();
+        reject();
+      };
+      const destroy = () => {
+        overlay.removeChild(element);
+        overlay.innerHTML = '';
+        overlay.classList.remove('modal-overlay--visible');
+        document.body.removeEventListener('click', bodyListener);
+      };
+      element.querySelectorAll('[data-modal-close]').forEach((btn: HTMLButtonElement)  =>{
+        btn.addEventListener('click', () => {
+          destroy();
+          reject();
+        })
+      });
+      element.querySelectorAll('[data-modal-send]').forEach((btn: HTMLButtonElement)  =>{
+        btn.addEventListener('click', () => {
+          destroy();
+          resolve(element.firstChild);
+        })
+      });
+      element.addEventListener('click', (event) => {
+        event.stopPropagation && event.stopPropagation();
+        event.cancelBubble = true;
+      });
+      overlay.appendChild(element);
+      overlay.classList.add('modal-overlay--visible');
+      setImmediate(() => {
+        document.body.addEventListener('click', bodyListener);
+      })
+    });
   }
 }

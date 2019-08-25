@@ -4,6 +4,7 @@ export class Api {
   private resolvers: { resolve: (result?: any) => void, reject: (result?: any) => void }[] = [];
   private options: any;
   private currentAnimation: any;
+  private callbacks: {[key: string]: ((payload?: any) => void)[]} = {};
 
   constructor(private host: string) {
   }
@@ -18,15 +19,27 @@ export class Api {
     return new Promise((resolve, reject) => {
       this.socket = new WebSocket(`ws://${this.host}/ws`, ['arduino']);
       this.socket.binaryType = "arraybuffer";
-      this.socket.onopen = function (e) {
+      this.socket.onopen = (e) => {
+        this.fireEvent('ws-connect', e);
         resolve(e);
       };
       this.socket.onerror = (e) => {
+        this.fireEvent('ws-error', e);
         reject(e);
       };
+      this.socket.onclose = (e) => {
+        this.fireEvent('ws-close', e);
+      };
       this.socket.onmessage = (e) => {
-        let payload = JSON.parse(e.data);
-        this.resolvers[payload.id][payload.success ? 'resolve' : 'reject'](payload.payload);
+        try {
+          let message = JSON.parse(e.data);
+          if (!message.id) {
+            this.fireEvent(message.event, message);
+            return;
+          }
+          this.resolvers[message.id][message.success ? 'resolve' : 'reject'](message.payload);
+        } catch (e) {
+        }
       };
     });
   }
@@ -75,6 +88,70 @@ export class Api {
   }
 
   public getWifiInfo() {
-    return this.send("getWifiInfo", {});
+    return this.send("getWifiInfo", {}).then((response) => {
+      if (response.networks) {
+        response.networks.sort((a, b) => {
+
+          if (a.isHidden && b.isHidden) {
+            return a.rssi > b.rssi ? -1 : 1;
+          }
+
+          if (a.isHidden) {
+            return 1;
+          }
+
+          if (b.isHidden) {
+            return -1;
+          }
+
+          if (a.rssi === b.rssi) {
+            return a.ssid.localeCompare(b.ssid);
+          }
+
+          return a.rssi > b.rssi ? -1 : 1;
+        })
+      }
+      return response;
+    });
+  }
+
+  onError(callback: () => void) {
+    this.on('ws-error', callback);
+  }
+
+  onReConnect(callback: () => void) {
+    this.on('ws-reconnect', callback);
+  }
+
+  onConnect(callback: () => void) {
+    this.on('ws-connect', callback);
+  }
+
+  onClose(callback: () => void) {
+    this.on('ws-close', callback);
+  }
+
+  private fireEvent(event: string | any | Event, payload: any = {}) {
+    const callbacks = this.callbacks[event] || [];
+    callbacks.forEach((callback: (payload?: any) => void) => {
+      callback(payload);
+    });
+  }
+
+  public on(event: string, callback: (payload?: any) => void) {
+    this.callbacks[event] = this.callbacks[event] || [];
+    this.callbacks[event].push(callback);
+  }
+
+  public off(event: string, callback: (payload?: any) => void) {
+    this.callbacks[event] = this.callbacks[event] || [];
+    const index = this.callbacks[event].indexOf(callback);
+    if (index > -1) {
+      this.callbacks[event].splice(index, 1);
+    }
+  }
+
+  public connectWifi(ssid: string, password: unknown) {
+    return this.send('connectWifi', {ssid, password});
   }
 }

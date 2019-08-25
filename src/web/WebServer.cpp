@@ -45,10 +45,6 @@ void WebServer::configure() {
 
     socket.onEvent(&WebServer::onSocketEvent);
     server.addHandler(&socket);
-    events.onConnect([](AsyncEventSourceClient *client) {
-        client->send("hello!", nullptr, millis(), 1000);
-    });
-    server.addHandler(&events);
 
     server.on("/api/v1/", HTTP_GET, IndexAction());
     server.on("/api/v1/audio/", HTTP_GET, AudioAction());
@@ -111,4 +107,13 @@ void WebServer::onSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *clie
 
 void WebServer::processWsMessage(const String& msg, AsyncWebSocketClient *client) {
     SocketEventHandler::handle(msg, client);
+}
+
+void WebServer::sendEvent(const String &name, DynamicJsonDocument &message) {
+    message["id"] = false;
+    message["event"] = name;
+
+    String json;
+    serializeJson(message, json);
+    socket.textAll(json);
 }

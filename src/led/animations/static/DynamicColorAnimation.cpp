@@ -31,7 +31,7 @@ void DynamicColorAnimation::animate() {
         timer = millis();
         uint8_t saturation = getOption("color.sat", DEFAULT_SATURATION);
         uint8_t bright = getOption("color.bright", DEFAULT_BRIGHT);
-        if (++color > 360) {
+        if (++color >= 255) {
             color = 0;
         }
         FastLED.showColor(CHSV(color, saturation, bright));

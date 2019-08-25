@@ -35,6 +35,9 @@ void SocketEventHandler::handle(const String &msg, AsyncWebSocketClient *client)
     if (event == "getOptions") {
         capacity += SETTINGS_CAPACITY;
     }
+    if (event == "getWifiInfo") {
+        capacity += 2048;
+    }
 
     DynamicJsonDocument responseDocument(capacity);
     auto responsePayload = responseDocument.createNestedObject("payload");
@@ -47,6 +50,7 @@ void SocketEventHandler::handle(const String &msg, AsyncWebSocketClient *client)
     else HANDLER("resetOptions", handleResetOptionsEvent)
     else HANDLER("getOptions", handleGetOptionsEvent)
     else HANDLER("getWifiInfo", handleGetWifiInfoEvent)
+    else HANDLER("connectWifi", handleConnectWifiEvent)
     else {
         ERROR_RESPONSE("No such action")
     }
@@ -131,6 +135,7 @@ void SocketEventHandler::handleSaveOptionsEvent(JsonVariant &payload, SocketEven
 
 void SocketEventHandler::handleResetOptionsEvent(JsonVariant &payload, SocketEventHandler::Response &response) {
     Application::getInstance().getSettingsStorage().truncate();
+    Application::getInstance().getSettingsStorage().save();
     response.payload["status"] = "done";
 }
 
@@ -139,7 +144,6 @@ void SocketEventHandler::handleGetOptionsEvent(JsonVariant &payload, SocketEvent
     auto settings = Application::getInstance().getSettingsStorage();
 
     response.payload["currentAnimation"] = led->getAnimation()->getName();
-    response.payload["DirectColorAnimation.color.bright"] =  settings.get("DirectColorAnimation.color.bright");
     auto options = response.payload.createNestedObject("options");
     options.set(settings.getJsonDocument()->as<JsonObject>());
 }
@@ -150,6 +154,7 @@ void SocketEventHandler::handleGetWifiInfoEvent(JsonVariant &payload, SocketEven
     if (scan.running) {
         response.payload["running"] = true;
     } else {
+        response.payload["running"] = false;
         response.payload["count"] = scan.count;
         JsonArray networks = response.payload.createNestedArray("networks");
         if (scan.count > 0) {
@@ -167,4 +172,19 @@ void SocketEventHandler::handleGetWifiInfoEvent(JsonVariant &payload, SocketEven
 
     response.payload["ap"] = WiFiManager::isInApMode();
     response.payload["ip"] = WiFiManager::ip();
+}
+
+void SocketEventHandler::handleConnectWifiEvent(JsonVariant &payload, SocketEventHandler::Response &response) {
+    if (!payload.containsKey("ssid")) {
+        ERROR_RESPONSE("No ssid")
+        return;
+    }
+
+    String ssid = payload["ssid"];
+    if (payload.containsKey("pass")) {
+        String pass = payload["pass"];
+        WiFiManager::connect(ssid, pass);
+    } else {
+        WiFiManager::connect(ssid);
+    }
 }

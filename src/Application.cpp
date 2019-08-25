@@ -54,38 +54,51 @@ SettingsStorage &Application::getSettingsStorage() {
 void Application::setup() {
     apMode = WiFiManager::autoConnect();
 
-    if (!apMode) {
-        Serial.println("OTA: Configured");
 #ifdef OTA_PASSWORD
-        ArduinoOTA.setPassword(OTA_PASSWORD);
+    ArduinoOTA.setPassword(OTA_PASSWORD);
 #endif
-        ArduinoOTA.onStart([]() {
-            Serial.println("OTA: Start updating");
-            ArduinoOTA.onEnd([]() {
-                Serial.println("OTA: Done updating");
-                if (ArduinoOTA.getCommand() == U_SPIFFS) {
-                    Application::getInstance().getSettingsStorage().save();
-                }
-                ESP.restart();
-            });
-        });
-        ArduinoOTA.onError([](ota_error_t error) {
-            Serial.printf("OTA: Error[%u]: ", error);
-            if (error == OTA_AUTH_ERROR) {
-                Serial.println("Auth Failed");
-            } else if (error == OTA_BEGIN_ERROR) {
-                Serial.println("Begin Failed");
-            } else if (error == OTA_CONNECT_ERROR) {
-                Serial.println("Connect Failed");
-            } else if (error == OTA_RECEIVE_ERROR) {
-                Serial.println("Receive Failed");
-            } else if (error == OTA_END_ERROR) {
-                Serial.println("End Failed");
-            }
-            ESP.restart();
-        });
-        ArduinoOTA.begin();
-    }
+    ArduinoOTA.onStart([this]() {
+        Serial.println("OTA: Start updating");
+        this->webServer->sendEvent("ota_start");
+    });
+    ArduinoOTA.onEnd([this]() {
+        Serial.println("OTA: Done updating");
+        if (ArduinoOTA.getCommand() == U_SPIFFS) {
+            Application::getInstance().getSettingsStorage().save();
+        }
+        ESP.restart();
+    });
+    ArduinoOTA.onProgress([this](unsigned int progress, unsigned int total) {
+        DynamicJsonDocument message(256);
+        message["progress"] = progress;
+        message["total"] = total;
+
+        this->webServer->sendEvent("ota_progress", message);
+    });
+    ArduinoOTA.onError([this](ota_error_t error) {
+        Serial.printf("OTA: Error[%u]: ", error);
+        String errorMessage;
+        if (error == OTA_AUTH_ERROR) {
+            errorMessage = "Auth Failed";
+        } else if (error == OTA_BEGIN_ERROR) {
+            errorMessage = "Begin Failed";
+        } else if (error == OTA_CONNECT_ERROR) {
+            errorMessage = "Connect Failed";
+        } else if (error == OTA_RECEIVE_ERROR) {
+            errorMessage = "Receive Failed";
+        } else if (error == OTA_END_ERROR) {
+            errorMessage = "End Failed";
+        }
+        Serial.println(errorMessage);
+        DynamicJsonDocument message(256);
+        message["error"] = error;
+        message["message"] = errorMessage;
+
+        this->webServer->sendEvent("ota_error", message);
+        ESP.restart();
+    });
+    ArduinoOTA.begin();
+
     webServer->listen();
 }
 

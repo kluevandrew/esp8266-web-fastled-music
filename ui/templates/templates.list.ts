@@ -15,6 +15,9 @@ import slider from './inputs/slider.html';
 import color from './inputs/color.html';
 import audio from './inputs/audio.html';
 import wifi from './options/wifi.html';
+import misc from './options/misc.html';
+import adc from './options/adc.html';
+import wifiConnect from './modals/wifi-connect.html';
 import app from './app.html';
 
 export const TemplatesList = {
@@ -35,5 +38,8 @@ export const TemplatesList = {
   'inputs/color.html': color,
   'inputs/audio.html': audio,
   'options/wifi.html': wifi,
+  'options/misc.html': misc,
+  'options/adc.html': adc,
+  'modals/wifi-connect.html': wifiConnect,
   'app.html': app,
 };
